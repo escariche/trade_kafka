@@ -4,6 +4,7 @@ var fs = require('fs');
 
 var app = express();
 var router = express.Router();
+var port = 80;
 
 // var viewsPath = __dirname + '/views/';
 //TODO
@@ -17,13 +18,13 @@ router.use(function (req,res,next) {
 
 router.get("/",function(req,res){
   //TODO
-  res.send("<img src="https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png">");
+  res.send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
 });
 
 app.use("/",router);
 
-app.listen(3000,function(){
-  console.log("Live at Port 3000");
+app.listen(port,function(){
+  console.log("Live at Port " + port);
 });
 
 var options = {
