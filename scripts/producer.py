@@ -23,7 +23,7 @@ from urllib2 import urlopen
 
 
 myIP = urlopen('http://ip.42.pl/raw').read()
-producer = KafkaProducer(bootstrap_servers=[myIP+':9092'])
+producer = KafkaProducer(bootstrap_servers=[myIP+':9090'])
 
 #Assignment of arguments
 topic = argv[1]

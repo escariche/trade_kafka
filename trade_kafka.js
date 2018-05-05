@@ -39,7 +39,7 @@ router.post("/:topicName",function(req,res){
   console.log("HTTP POST request was received");
   var topic = req.params.topicName; //public address
   options.args.push(topic);
-  console.log(req);
+  console.log(req.body);
   console.log(topic);
   PythonShell.run('producer.py', options, function (err, results){
       if (err) throw err;
