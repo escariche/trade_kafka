@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var app = express();
 var router = express.Router();
-var port = 80;
+var port = 3000;
 
 // var viewsPath = __dirname + '/views/';
 //TODO
