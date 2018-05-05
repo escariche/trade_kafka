@@ -8,8 +8,8 @@ var port = 80;
 
 // var viewsPath = __dirname + '/views/';
 //TODO
-var kafkaPath = '/home/ec2-user/kafka/kafka_2.11-1.0.0/';
-var dataPath = '/home/ec2-user/kafka/kafka_2.11-1.0.0/consumer_data/';
+var kafkaPath = '/home/ec2-user/trade_kafka/';
+var dataPath = '/home/ec2-user/trade_kafka/consumer_data/';
 
 router.use(function (req,res,next) {
   console.log("/" + req.method);
@@ -29,8 +29,7 @@ app.listen(port,function(){
 
 var options = {
   mode: 'text',
-  //TODO
-  scriptPath: '/home/ec2-user/kafka/kafka_2.11-1.0.0/trade_producer/scripts',
+  scriptPath: '/home/ec2-user/trade_kafka/scripts',
   pythonOptions: ['-u'],
   args: []
 };
@@ -40,7 +39,7 @@ router.post("/:topicName",function(req,res){
   console.log("HTTP POST request was received");
   var topic = req.params.topicName; //public address
   options.args.push(topic);
-
+  console.log(req);
   console.log(topic);
   PythonShell.run('producer.py', options, function (err, results){
       if (err) throw err;
