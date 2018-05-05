@@ -1,0 +1,11 @@
+{
+  "name" : "trade_kafka",
+  "version" : "0.0.1",
+  "dependencies" : {
+    "express" : "latest",
+    "python-shell" : "latest"
+  },
+  "scripts" : {
+    "start" : "node trade_kafka.js"
+  }
+}
