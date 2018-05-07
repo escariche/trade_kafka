@@ -7,6 +7,8 @@ import os.path
 #imports for communication
 from urllib2 import urlopen
 import json
+import socket
+
 
 #KafkaConsumer settings
 myIP = urlopen('http://ip.42.pl/raw').read()
