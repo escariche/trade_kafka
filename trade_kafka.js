@@ -41,16 +41,12 @@ router.post("/:topicName",function(req,res){
   options.args.push(topic);
   console.log(req.body);
   console.log(topic);
-  PythonShell.run('producer.py', options, function (err, results){
-      //if (err) throw err;
-      //console.log('results: %j', results);
-    }).then(function (results){
-      res.sendStatus(200);
-    }).catch(function(err){
-      console.log(err);
-    });
+  PythonShell.run('producer.py', options).then(function (results){
+    res.sendStatus(200);
+  }).catch(function(err){
+    console.log(err);
   });
-
+});
 //CONSUMER
 router.get("/:topicName",function(req,res){
     var topic = req.params.topicName;
