@@ -10,7 +10,7 @@ import json
 
 #KafkaConsumer settings
 myIP = urlopen('http://ip.42.pl/raw').read()
-consumer = KafkaConsumer(bootstrap_servers=[myIP+':9091'], api_version=(0,10))
+consumer = KafkaConsumer(bootstrap_servers=['172.31.34.212:9091'], api_version=(0,10))
 
 #TODO
 consumerDataPath = '/home/ec2-user/kafka/kafka_2.11-1.0.0/consumer_data/'
