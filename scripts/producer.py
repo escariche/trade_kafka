@@ -43,7 +43,7 @@ msgJSON = {}
 
 def getBPM():
     data = {}
-    data["data_type"] = dataType
+    #data["data_type"] = dataType
     data["values"] = []
 
     sample = {}
@@ -70,8 +70,8 @@ def publish(msg):
 def sendMsg(sc):
     print "Sending message..."
     ## TODO: what to publish
-    #toPublish = getBPM() #change This
-    publish(str(datetime.now()))
+    toPublish = getBPM() #change This
+    publish(toPublish)
     s.enter(5, 1, sendMsg, (sc,))
 
 s = sched.scheduler(time.time, time.sleep)
