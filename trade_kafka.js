@@ -42,10 +42,13 @@ router.post("/:topicName",function(req,res){
   console.log(req.body);
   console.log(topic);
   PythonShell.run('producer.py', options, function (err, results){
-      if (err) throw err;
-      console.log('results: %j', results);
+      //if (err) throw err;
+      //console.log('results: %j', results);
+    }).then(function (results){
+      res.sendStatus(200);
+    }).catch(function(err){
+      console.log(err);
     });
-    res.sendStatus(200);
   });
 
 //CONSUMER
