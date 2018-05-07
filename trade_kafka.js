@@ -44,6 +44,7 @@ router.post("/:topicName",function(req,res){
   PythonShell.run('producer.py', options, function(err, results) {
     if (err) {
       console.log("Error when running producer.py", err);
+      res.send(err);
       return;
     }
     res.sendStatus(200);
