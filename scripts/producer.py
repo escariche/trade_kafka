@@ -16,6 +16,7 @@ from sys import argv
 
 #For URL handling
 from urllib2 import urlopen
+import socket
 
 #For encryption
 # from Crypto.PublicKey import RSA
@@ -23,6 +24,8 @@ from urllib2 import urlopen
 
 
 myIP = urlopen('http://ip.42.pl/raw').read()
+myPrivateIP = socket.gethostbyname(socket.gethostname())
+print("myPrivateIP" = myPrivateIP)
 producer = KafkaProducer(bootstrap_servers=[myIP+':9090'])
 
 #Assignment of arguments
