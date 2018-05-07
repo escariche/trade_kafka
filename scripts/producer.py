@@ -25,7 +25,7 @@ import socket
 
 myIP = urlopen('http://ip.42.pl/raw').read()
 myPrivateIP = socket.gethostbyname(socket.gethostname())
-print("myPrivateIP" = myPrivateIP)
+print("myPrivateIP", myPrivateIP)
 producer = KafkaProducer(bootstrap_servers=[myIP+':9090'])
 
 #Assignment of arguments
