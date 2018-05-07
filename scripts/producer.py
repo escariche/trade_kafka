@@ -26,11 +26,15 @@ import socket
 myIP = urlopen('http://ip.42.pl/raw').read()
 myPrivateIP = socket.gethostbyname(socket.gethostname())
 print("myPrivateIP", myPrivateIP)
-producer = KafkaProducer(bootstrap_servers=['172.31.34.212:9090'], api_version=(0,10))
+producer = KafkaProducer(bootstrap_servers=[myPrivateIP + ':9090'], api_version=(0,10))
 
 #Assignment of arguments
-topic = argv[1]
-
+try:
+    topic = argv[1]
+except IndexError:
+    print(IndexError)
+    quit()
+     
 #Creation of message structure
 msgJSON = {}
 

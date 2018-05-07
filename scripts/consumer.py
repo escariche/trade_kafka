@@ -10,13 +10,20 @@ import json
 
 #KafkaConsumer settings
 myIP = urlopen('http://ip.42.pl/raw').read()
-consumer = KafkaConsumer(bootstrap_servers=['172.31.34.212:9091'], api_version=(0,10))
+myPrivateIP = socket.gethostbyname(socket.gethostname())
+consumer = KafkaConsumer(bootstrap_servers=[myPrivateIP + ':9091'], api_version=(0,10))
 
 #TODO
 consumerDataPath = '/home/ec2-user/kafka/kafka_2.11-1.0.0/consumer_data/'
 
-topic = argv[1]
-consumer.subscribe([topic])
+try:
+    topic = argv[1]
+    consumer.subscribe([topic])
+except IndexError:
+    print(IndexError)
+    quit()
+
+#topic = argv[1]
 
 
 if consumer.subscription() is not None:
