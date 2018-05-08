@@ -64,7 +64,7 @@ router.post("/:topicName",function(req,res){
           null,
           // you can send a timestamp here. If your broker version supports it,
           // it will get added. Otherwise, we default to 0
-          Date.now(),
+          Date.now()
           // you can send an opaque token here, which gets passed along
           // to your delivery reports
         );
