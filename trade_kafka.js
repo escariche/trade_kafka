@@ -40,7 +40,7 @@ router.post("/:topicName",function(req,res){
   var topic = req.params.topicName; //public address
   console.log(topic);
   options.args.push(topic);
-  console.log("options.args", option.args);
+  console.log("options.args", options.args);
   //console.log(req.body);
   PythonShell.run('producer.py', options, function(err, results) {
     options.args = []
@@ -81,7 +81,7 @@ router.get("/subscribe/:topicName",function(req,res){
   var topic = req.params.topicName;
   console.log("Requested topic: " + topic);
   options.args.push(topic);
-  console.log("options.args", option.args);
+  console.log("options.args", options.args);
   /*requestedTopicPath = dataPath + topic + '_val.json';
   fs.stat(requestedTopicPath, function(err, data) {
     if (err.code == 'ENOENT') {
