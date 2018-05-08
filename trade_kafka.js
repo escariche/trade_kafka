@@ -123,12 +123,12 @@ router.get("/:topicName",function(req,res){
   var Transform = require('stream').Transform;
 
   var brokerListConsumer;
-  if (brokerList != null) {
+  if (brokerList === undefined) {
+    brokerListConsumer = '172.31.34.212:9090, 172.31.34.212:9091';
     console.log(brokerList);
-    brokerListConsumer = brokerList;
   } else {
     console.log(brokerList);
-    brokerListConsumer = '172.31.34.212:9090, 172.31.34.212:9091';
+    brokerListConsumer = brokerList;
   }
   var stream = Kafka.KafkaConsumer.createReadStream({
     'metadata.broker.list': brokerListConsumer,
