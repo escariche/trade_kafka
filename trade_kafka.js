@@ -48,7 +48,7 @@ router.post("/:topicName",function(req,res){
     'dr_cb' : true
   });
 
-  console.log(producer.getMetaData().toString());
+  console.log(producer.getMetaData);
 
   producer.on('event.log', function(log) {
     console.log("LOG", log);
