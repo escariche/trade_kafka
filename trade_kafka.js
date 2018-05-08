@@ -113,7 +113,7 @@ router.post("/:topicName",function(req,res){
 });
 
 //CONSUMER
-router.get("/:topicName",function(req,res){
+router.get("/stream/:topicName",function(req,res){
   console.log("HTTP GET request was received");
   var topic = req.params.topicName;
   //TODO EXTRA - create groups of subscribers
@@ -161,5 +161,40 @@ router.get("/:topicName",function(req,res){
     stream.consumer.on('event.error', function(err){
       console.log(err);
     });
+
+});
+
+router.get("/consumer/:topicName",function(req,res){
+  console.log("HTTP GET request was received");
+  var topic = req.params.topicName;
+  //TODO EXTRA - create groups of subscribers
+  var group = 'All Companies';
+  console.log("Requested topic: " + topic);
+
+  var brokerListConsumer;
+  if (brokerList === undefined) {
+    brokerListConsumer = '172.31.34.212:9090, 172.31.34.212:9091';
+    console.log(brokerList);
+  } else {
+    console.log(brokerList);
+    brokerListConsumer = brokerList;
+  }
+
+  var consumer = new Kafka.KafkaConsumer({
+    'group.id': group,
+    'metadata.broker.list': brokerListConsumer,
+  }, {
+
+  });
+
+  consumer.connect();
+
+  consumer.on('ready', function () {
+    consumer.subscriber([topic]);
+    consumer.consume();
+  }).on('data', function(data) {
+    console.log(data.value.toString());
+    res.status(200).send(data.value.toString());
+  });
 
 });
