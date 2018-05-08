@@ -70,7 +70,8 @@ router.post("/:topicName",function(req,res){
       } else {
         console.log('Got metadata');
         console.log(metadata);
-      });
+      }
+    });
     try {
         producer.produce(
           // Topic to send the message to
