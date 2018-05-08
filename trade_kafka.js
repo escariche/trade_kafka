@@ -168,18 +168,9 @@ router.get("/consumer/:topicName",function(req,res){
   var group = 'All Companies';
   console.log("Requested topic: " + topic);
 
-  var brokerListConsumer;
-  if (brokerList === undefined) {
-    brokerListConsumer = '172.31.34.212:9090, 172.31.34.212:9091';
-    console.log(brokerList);
-  } else {
-    console.log(brokerList);
-    brokerListConsumer = brokerList;
-  }
-
   var consumer = new Kafka.KafkaConsumer({
     'group.id': group,
-    'metadata.broker.list': brokerListConsumer,
+    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
   }, {
 
   });
