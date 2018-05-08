@@ -21,13 +21,11 @@ consumerDataPath = '/home/ec2-user/consumer_data/'
 
 try:
     topic = argv[1]
+    print("Topic requested", topic)
     consumer.subscribe([topic])
 except IndexError:
     print(IndexError)
     quit()
-
-#topic = argv[1]
-
 
 if consumer.subscription() is not None:
     print(consumer.subscription())

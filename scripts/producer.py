@@ -63,7 +63,9 @@ def getBPM():
 #     producer.send(topic, msg)
 #     producer.flush()
 try:
+    print("Sending routine")
     toPublish = getBPM()
+    print("toPublish", toPublish)
     producer.send(topic, toPublish)
     producer.flush()
 except:
