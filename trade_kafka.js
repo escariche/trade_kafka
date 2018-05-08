@@ -203,4 +203,17 @@ router.get("/consumer/:topicName",function(req,res){
     console.log(data.value.toString());
     res.status(200).send(data.value.toString());
   });
+
+
+  var stream = consumer.createReadStream(
+    globalConfig, topicConfig, {
+      topics : [topic];
+  });
+
+  stream.on('data', function(msg) {
+    console.log('Got message!');
+    console.log(msg.value.toString());
+    res.status(200).send(msg.value.toString());
+  });
+
 });
