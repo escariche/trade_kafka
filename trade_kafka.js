@@ -180,7 +180,7 @@ router.get("/consumer/:topicName",function(req,res){
 
   consumer.on('ready', function () {
     console.log('ready');
-    producer.getMetadata(null, function(err, metadata){
+    consumer.getMetadata(null, function(err, metadata){
       if (err) {
         console.error('Error getting metadata');
         console.error(err);
@@ -207,7 +207,7 @@ router.get("/consumer/:topicName",function(req,res){
 
   var stream = consumer.createReadStream(
     globalConfig, topicConfig, {
-      topics : [topic];
+      topics : [topic]
   });
 
   stream.on('data', function(msg) {
