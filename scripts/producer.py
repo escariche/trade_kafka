@@ -64,7 +64,7 @@ def getBPM():
 #     producer.flush()
 try:
     toPublish = getBPM()
-    producer.send(topic, msg)
+    producer.send(topic, toPublish)
     producer.flush()
 except:
     print("Error: ", sys.exc_info()[0])
