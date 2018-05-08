@@ -206,7 +206,9 @@ router.get("/consumer/:topicName",function(req,res){
 
 
   var stream = consumer.createReadStream(
-    globalConfig, topicConfig, {
+    'group.id': group,
+    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
+    {
       topics : [topic]
   });
 
