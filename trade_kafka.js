@@ -48,7 +48,10 @@ router.post("/:topicName",function(req,res){
     'dr_cb' : true
   });
 
-
+  var opts = {
+    topic: topic,
+    timeout: 10000
+  };
   producer.getMetadata(opts, function(err, metadata) {
     if (err) {
       console.error('Error getting metadata');
