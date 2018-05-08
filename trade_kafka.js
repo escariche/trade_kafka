@@ -48,20 +48,6 @@ router.post("/:topicName",function(req,res){
     'dr_cb' : true
   });
 
-  var opts = {
-    topic: topic,
-    timeout: 10000
-  };
-  producer.getMetadata(opts, function(err, metadata) {
-    if (err) {
-      console.error('Error getting metadata');
-      console.error(err);
-    } else {
-      console.log('Got metadata');
-      console.log(metadata);
-    }
-  });
-
   producer.on('event.log', function(log) {
     console.log("LOG", log);
   });
@@ -94,7 +80,6 @@ router.post("/:topicName",function(req,res){
         console.error('A problem occurred when sending our message');
         console.error(err);
         res.send(err);
-        return;
       }
   });
 
@@ -103,14 +88,12 @@ router.post("/:topicName",function(req,res){
     console.error('Error from producer');
     console.error(err);
     res.send(err);
-    return;
   });
 
   producer.connect();
 
   setTimeout(function() {
     producer.disconnect();
-    console.log("Producer disconnected");
   }, 30000);
 });
 
