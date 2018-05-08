@@ -29,7 +29,8 @@ myIP = urlopen('http://ip.42.pl/raw').read()
 myPrivateIP = socket.gethostbyname(socket.gethostname())
 print("myPrivateIP", myPrivateIP)
 producer = KafkaProducer(bootstrap_servers=[myPrivateIP + ':9090', myPrivateIP + ':9091'], api_version=(0,10))
-print(ClusterMetadata.brokers())
+clusterMetadata = ClusterMetadata()
+print(clusterMetadata.brokers())
 #Assignment of arguments
 try:
     topic = argv[1]
