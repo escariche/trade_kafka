@@ -71,7 +71,7 @@ router.post("/:topicName",function(req,res){
         console.log('Got metadata');
         console.log(metadata);
         var b;
-        for b in metadata.brokers {
+        for (b in metadata.brokers) {
           brokerList += metadata.brokers.host + ':' + metadata.brokers.port;
         }
         console.log(brokerList);
