@@ -71,6 +71,7 @@ router.post("/:topicName",function(req,res){
         console.log('Got metadata');
         console.log(metadata);
         brokerList = metadata.brokers;
+        console.log(brokerList);
       }
     });
     try {
@@ -123,8 +124,10 @@ router.get("/:topicName",function(req,res){
 
   var brokerListConsumer;
   if (brokerList != null) {
+    console.log(brokerList);
     brokerListConsumer = brokerList;
   } else {
+    console.log(brokerList);
     brokerListConsumer = '172.31.34.212:9090, 172.31.34.212:9091';
   }
   var stream = Kafka.KafkaConsumer.createReadStream({
