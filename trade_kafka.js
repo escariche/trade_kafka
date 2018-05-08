@@ -70,11 +70,16 @@ router.post("/:topicName",function(req,res){
       } else {
         console.log('Got metadata');
         console.log(metadata);
-        var b;
-        for (b in metadata.brokers) {
-          brokerList += metadata.brokers.host + ':' + metadata.brokers.port;
-        }
-        console.log(brokerList);
+        var metadataJSON = JSON.parse(metadata, function (key, value) {
+          if (key == 'brokers'){
+            console.log(value);
+            var b;
+            for (b in value) {
+              brokerList += value['host'] + ':' + value['port'] + ',';
+            }
+          }
+          console.log(brokerList);
+        });
       }
     });
     try {
