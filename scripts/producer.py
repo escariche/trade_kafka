@@ -30,7 +30,12 @@ myPrivateIP = socket.gethostbyname(socket.gethostname())
 print("myPrivateIP", myPrivateIP)
 producer = KafkaProducer(bootstrap_servers=[myPrivateIP + ':9090', myPrivateIP + ':9091'], api_version=(0,10))
 clusterMetadata = ClusterMetadata()
-print(clusterMetadata.brokers())
+print("Metadata", clusterMetadata)
+print("All brokers Metadata", clusterMetadata.brokers())
+print("Broker 0 Metadata", clusterMetadata.broker_metadata(0))
+print("Broker 1 Metadata", clusterMetadata.broker_metadata(1))
+print("Known Topics Metadata",clusterMetadata.topics())
+
 #Assignment of arguments
 try:
     topic = argv[1]
