@@ -119,6 +119,7 @@ router.get("/:topicName",function(req,res){
 
   consumer.on('event.error', function(err) {
     console.error('Error from consumer', err);
+    res.send(err);
   });
 
   consumer.on('ready', function(){
