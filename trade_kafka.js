@@ -70,18 +70,7 @@ router.post("/:topicName",function(req,res){
       } else {
         console.log('Got metadata');
         console.log(metadata);
-        var metadataJSON = JSON.parse(metadata, function (key, value) {
-          if (key == 'brokers'){
-            console.log(value);
-            var b;
-            for (b in value) {
-              brokerList += value['host'] + ':' + value['port'] + ',';
-            }
-          }
-          console.log(brokerList);
-        });
-      }
-    });
+      });
     try {
         producer.produce(
           // Topic to send the message to
