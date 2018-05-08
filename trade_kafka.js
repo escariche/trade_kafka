@@ -178,8 +178,11 @@ router.get("/consumer/:topicName",function(req,res){
 
   consumer.connect();
 
-  consumer.on('ready', function () {
-    console.log('ready');
+  var counter = 0;
+  var numMsg = 5;
+
+  consumer.on('ready', function (arg) {
+    console.log('ready', arg.toString());
     consumer.getMetadata(null, function(err, metadata){
       if (err) {
         console.error('Error getting metadata');
@@ -194,28 +197,35 @@ router.get("/consumer/:topicName",function(req,res){
     console.log('subs');
     consumer.consume();
     console.log('consume');
-  })
+  });
   // .on('data', function(data) {
   //   console.log(data.value.toString());
   //   res.status(200).send(data.value.toString());
   // });
   consumer.on('data', function(data){
+    counter ++;
+    if(counter % numMsg === 0) {
+      console.log('Calling commit');
+      consumer.commit(data);
+    }
+    
     console.log(data.value.toString());
     res.status(200).send(data.value.toString());
   });
 
 
-  var stream = Kafka.KafkaConsumer.createReadStream({
-    'group.id': group,
-    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091'
-  },{},{
-    topics : [topic]
-  });
-
-  stream.on('data', function(msg) {
-    console.log('Got message!');
-    console.log(msg.value.toString());
-    res.status(200).send(msg.value.toString());
-  });
-
+  //This leads to Broker transport failure
+  // var stream = Kafka.KafkaConsumer.createReadStream({
+  //   'group.id': group,
+  //   'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091'
+  // },{},{
+  //   topics : [topic]
+  // });
+  //
+  // stream.on('data', function(msg) {
+  //   console.log('Got message!');
+  //   console.log(msg.value.toString());
+  //   res.status(200).send(msg.value.toString());
+  // });
+  //
 });
