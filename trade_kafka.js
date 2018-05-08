@@ -78,7 +78,7 @@ router.post("/:topicName",function(req,res){
           // you can send an opaque token here, which gets passed along
           // to your delivery reports
         );
-        res.status(200).send();
+        res.status(200).send(producer.getMetadata());
       } catch (err) {
         console.error('A problem occurred when sending our message');
         console.error(err);
@@ -99,6 +99,7 @@ router.post("/:topicName",function(req,res){
 
   setTimeout(function() {
     producer.disconnect();
+    return;
     console.log("Producer disconnected");
   }, 30000);
 });
