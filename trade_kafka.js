@@ -99,34 +99,44 @@ router.post("/:topicName",function(req,res){
 
 //CONSUMER
 router.get("/:topicName",function(req,res){
-  console.log("HTTP GET/historic request was received");
+  console.log("HTTP GET request was received");
   var topic = req.params.topicName;
   //TODO EXTRA - create groups of subscribers
   var group = 'All Companies';
   console.log("Requested topic: " + topic);
 
-  var consumer = new Kafka.KafkaConsumer({
-    'group.id': group,
+  var Transform = require('stream').Transform;
+
+  var stream = Kafka.KafkaConsumer.createReadStream({
     'metadata.broker.list': 'localhost:9090, localhost:9091',
-  }, {});
-
-  // Flowing mode
-  consumer.connect();
-
-  consumer.on('ready', function() {
-    consumer.subscribe([topic]);
-    // Consume from the librdtesting-01 topic. This is what determines
-    // the mode we are running in. By not specifying a callback (or specifying
-    // only a callback) we get messages as soon as they are available.
-    consumer.consume();
-  });
-  consumer.on('data', function(data) {
-    // Output the actual message contents
-    console.log(data.value.toString());
+    'group.id': group,
+    'socket.keepalive.enable': true,
+    'enable.auto.commit': false
+  }, {}, {
+    topics: topic,
+    waitInterval: 0,
+    objectMode: false
   });
 
-  setTimeout(function() {
-    consumer.disconnect();
-  }, 30000);
+  stream.on('error', function(err){
+    if (err) {
+      console.log(err);
+    }
+    process.exit(1);
+  });
+
+  stream.pipe(process.stdout);
+
+
+    stream.on('error', function(err){
+      if (err) {
+        console.log(err);
+      }
+      process.exit(1);
+    });
+
+    stream.consumer.on('event.error', function(err){
+      console.log(err);
+    });
 
 });
