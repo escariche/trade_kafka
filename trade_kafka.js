@@ -35,6 +35,9 @@ app.listen(port,function(){
 //   args: []
 // };
 
+
+///// Kafka ///////
+var brokerList;
 //PRODUCER
 router.post("/:topicName",function(req,res){
   console.log("HTTP POST request was received");
@@ -67,6 +70,7 @@ router.post("/:topicName",function(req,res){
       } else {
         console.log('Got metadata');
         console.log(metadata);
+        brokerList = metadata.brokers;
       }
     });
     try {
@@ -117,8 +121,14 @@ router.get("/:topicName",function(req,res){
 
   var Transform = require('stream').Transform;
 
+  var brokerListConsumer;
+  if (brokerList != null) {
+    brokerListConsumer = brokerList;
+  } else {
+    brokerListConsumer = '172.31.34.212:9090, 172.31.34.212:9091';
+  }
   var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
+    'metadata.broker.list': brokerListConsumer,
     'group.id': group,
     'socket.keepalive.enable': true,
     'enable.auto.commit': false
