@@ -106,14 +106,12 @@ router.get("/:topicName",function(req,res){
   console.log("Requested topic: " + topic);
 
   var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': 'localhost:9090, localhost:9091',
+    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
     'group.id': group,
     'socket.keepalive.enable': true,
     'enable.auto.commit': false
   }, {}, {
-    topics: topic,
-    waitInterval: 0,
-    objectMode: false
+    topics: topic
   });
 
   stream.on('error', function(err) {
@@ -121,6 +119,12 @@ router.get("/:topicName",function(req,res){
     process.exit(1);
   });
 
+  stream.on('data', function(message){
+    console.log('Got Message');
+    console.log(message.value.toString());
+    res.status(200).send(message.value.toString());
+  });
+  
   stream.pipe(process.stdout);
 
   stream.on('error', function(err) {
