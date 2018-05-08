@@ -48,7 +48,7 @@ router.post("/:topicName",function(req,res){
   var stream = Kafka.Producer.createWriteStream({
     'metadata.broker.list' : 'localhost:9090, localhost:9091'
   }, {}, {
-    topic : topic;
+    topic : topic
   });
 
   var queuedSuccess = stream.write(new Buffer('Example msg'));
