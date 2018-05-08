@@ -1,6 +1,7 @@
 var express = require("express");
-var PythonShell = require('python-shell');
+// var PythonShell = require('python-shell');
 var fs = require('fs');
+var Kafka = require('node-rdkafka');
 
 var app = express();
 var router = express.Router();
@@ -27,31 +28,58 @@ app.listen(port,function(){
   console.log("Live at Port " + port);
 });
 
-var options = {
-  mode: 'text',
-  scriptPath: '/home/ec2-user/trade_kafka/scripts',
-  pythonOptions: ['-u'],
-  args: []
-};
+// var options = {
+//   mode: 'text',
+//   scriptPath: '/home/ec2-user/trade_kafka/scripts',
+//   pythonOptions: ['-u'],
+//   args: []
+// };
 
 //PRODUCER
 router.post("/:topicName",function(req,res){
   console.log("HTTP POST request was received");
   var topic = req.params.topicName; //public address
   console.log(topic);
-  options.args.push(topic);
-  console.log("options.args", options.args);
-  //console.log(req.body);
-  PythonShell.run('producer.py', options, function(err, results) {
-    options.args = []
-    console.log("attempt to empty options.args", options.args);
-    if (err) {
-      console.log("Error when running producer.py", err);
-      res.send(err);
-      return;
-    }
-    res.sendStatus(200);
+
+  var producer = new Kafka.Producer({
+    'metadata.broker.list' : 'localhost:9090, localhost:9091'
   });
+
+  var stream = Kafka.Producer.createWriteStream({
+    'metadata.broker.list' : 'localhost:9090, localhost:9091'
+  }, {}, {
+    topic : topic;
+  });
+
+  var queuedSuccess = stream.write(new Buffer('Example msg'));
+
+  if (queuedSuccess) {
+    console.log('We queued our message!');
+  } else {
+  // Note that this only tells us if the stream's queue is full,
+  // it does NOT tell us if the message got to Kafka!  See below...
+  console.log('Too many messages in our queue already');
+  }
+
+  stream.on('error', function (err) {
+  // Here's where we'll know if something went wrong sending to Kafka
+  console.error('Error in our kafka stream');
+  console.error(err);
+})
+
+  // options.args.push(topic);
+  // console.log("options.args", options.args);
+  //console.log(req.body);
+  // PythonShell.run('producer.py', options, function(err, results) {
+  //   options.args = []
+  //   console.log("attempt to empty options.args", options.args);
+  //   if (err) {
+  //     console.log("Error when running producer.py", err);
+  //     res.send(err);
+  //     return;
+  //   }
+  //   res.sendStatus(200);
+  // });
 });
 
 //CONSUMER - HISTORIC
