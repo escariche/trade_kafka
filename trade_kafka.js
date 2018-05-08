@@ -48,8 +48,6 @@ router.post("/:topicName",function(req,res){
     'dr_cb' : true
   });
 
-  console.log("prod connected", producer.isConnected());
-
   producer.on('event.log', function(log) {
     console.log("LOG", log);
   });
@@ -58,7 +56,6 @@ router.post("/:topicName",function(req,res){
     console.error('Error from producer');
     console.error(err);
   });
-
 
   producer.on('ready', function(){
     try {
@@ -121,34 +118,20 @@ router.get("/:topicName",function(req,res){
   });
 
   consumer.on('event.error', function(err) {
-    console.error('Error from consumer');
-    console.error(err);
+    console.error('Error from consumer', err);
   });
 
   consumer.on('ready', function(){
     consumer.subscribe([topic]);
     consumer.consume();
+    consumer.commit();
   }).on('data', function(data){
     console.log("data", data.value.toString());
     res.status(200).send(data.value.toString());
-    return;
   });
   consumer.connect();
+
   setTimeout(function() {
     consumer.disconnect();
   }, 30000);
-  // requestedTopicPath = dataPath + topic + '_val.json';
-  // fs.stat(requestedTopicPath, function(err, data) {
-  //   if (err.code == 'ENOENT') {
-  //     console.log('The historical from the requested topic was not found.', err);
-  //     res.send(err);
-  //     return;
-  //   } else if (err){
-  //     console.log(err);
-  //     res.send(err);
-  //     return;
-  //   }
-  //   console.log('Requested topic exists');
-  //   res.sendFile(requestedTopicPath);
-  // });
 });
