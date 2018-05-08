@@ -22,6 +22,7 @@ consumerDataPath = '/home/ec2-user/consumer_data/'
 try:
     topic = argv[1]
     print("Topic requested", topic)
+    print("Topics available", consumer.topics())
     consumer.subscribe([topic])
 except IndexError:
     print(IndexError)
