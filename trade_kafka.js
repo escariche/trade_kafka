@@ -105,30 +105,31 @@ router.get("/:topicName",function(req,res){
   var group = 'All Companies';
   console.log("Requested topic: " + topic);
 
-  var consumer = new Kafka.KafkaConsumer({
+  var stream = Kafka.KafkaConsumer.createReadStream({
+    'metadata.broker.list': 'localhost:9090, localhost:9091',
     'group.id': group,
-    'metadata.broker.list': 'localhost:9090, localhost:9091'
-  }, {});
-
-  consumer.on('event.log', function(log) {
-    console.log("Event log", log);
+    'socket.keepalive.enable': true,
+    'enable.auto.commit': false
+  }, {}, {
+    topics: topic,
+    waitInterval: 0,
+    objectMode: false
   });
 
-  consumer.on('event.error', function(err) {
-    console.error('Error from consumer', err);
+  stream.on('error', function(err) {
+    if (err) console.log(err);
+    process.exit(1);
   });
 
-  consumer.on('ready', function(){
-    consumer.subscribe([topic]);
-    consumer.consume();
-    consumer.commit();
-  }).on('data', function(data){
-    console.log("data", data.value.toString());
-    res.status(200).send(data.value.toString());
-  });
-  consumer.connect();
+  stream.pipe(process.stdout);
 
-  setTimeout(function() {
-    consumer.disconnect();
-  }, 30000);
+  stream.on('error', function(err) {
+    console.log(err);
+    process.exit(1);
+  });
+
+  stream.consumer.on('event.error', function(err) {
+    console.log(err);
+  });
+
 });
