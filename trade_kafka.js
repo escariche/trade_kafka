@@ -110,7 +110,7 @@ router.get("/:topicName",function(req,res){
 
   var consumer = new Kafka.KafkaConsumer({
     'group.id': group,
-    'metadata.broker.list': 'localhost:9091'
+    'metadata.broker.list': 'localhost:9090, localhost:9091'
   }, {});
 
   consumer.on('event.log', function(log) {
@@ -119,7 +119,6 @@ router.get("/:topicName",function(req,res){
 
   consumer.on('event.error', function(err) {
     console.error('Error from consumer', err);
-    res.send(err);
   });
 
   consumer.on('ready', function(){
