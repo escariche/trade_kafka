@@ -180,6 +180,16 @@ router.get("/consumer/:topicName",function(req,res){
 
   consumer.on('ready', function () {
     console.log('ready');
+    producer.getMetadata(null, function(err, metadata){
+      if (err) {
+        console.error('Error getting metadata');
+        console.error(err);
+      } else {
+        console.log('Got metadata');
+        console.log(metadata);
+      }
+    });
+
     consumer.subscribe([topic]);
     console.log('subs');
     consumer.consume();
