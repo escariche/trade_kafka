@@ -119,7 +119,8 @@ router.get("/:topicName",function(req,res){
     // the mode we are running in. By not specifying a callback (or specifying
     // only a callback) we get messages as soon as they are available.
     consumer.consume();
-  }).on('data', function(data) {
+  });
+  consumer.on('data', function(data) {
     // Output the actual message contents
     console.log(data.value.toString());
   });
