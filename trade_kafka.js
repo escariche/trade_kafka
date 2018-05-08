@@ -184,9 +184,13 @@ router.get("/consumer/:topicName",function(req,res){
     console.log('subs');
     consumer.consume();
     console.log('consume');
-  }).on('data', function(data) {
+  })
+  // .on('data', function(data) {
+  //   console.log(data.value.toString());
+  //   res.status(200).send(data.value.toString());
+  // });
+  consumer.on('data', function(data){
     console.log(data.value.toString());
     res.status(200).send(data.value.toString());
   });
-
 });
