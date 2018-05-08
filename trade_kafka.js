@@ -179,7 +179,7 @@ router.get("/consumer/:topicName",function(req,res){
   consumer.connect();
 
   consumer.on('ready', function () {
-    consumer.subscriber([topic]);
+    consumer.subscribe([topic]);
     consumer.consume();
   }).on('data', function(data) {
     console.log(data.value.toString());
