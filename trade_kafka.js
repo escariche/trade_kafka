@@ -48,6 +48,15 @@ router.post("/:topicName",function(req,res){
     'dr_cb' : true
   });
 
+  producer.on('event.log', function(log) {
+    console.log("LOG", log);
+  });
+
+  producer.on('event.error', function(err) {
+    console.error('Error from producer');
+    console.error(err);
+  });
+
   producer.connect();
 
   producer.on('ready', function(){
@@ -93,21 +102,31 @@ router.get("/:topicName",function(req,res){
   var group = 'All Companies';
   console.log("Requested topic: " + topic);
 
-  var consumer = new Kafka.KafkaConsumer({
+  var stream = Kafka.KafkaConsumer.createReadStream({
+    'metadata.broker.list': 'localhost:9091',
     'group.id': group,
-    'metadata.broker.list': 'localhost:9091'
-  }, {});
+    'socket.keepalive.enable': true,
+    'enable.auto.commit': false
+  }, {}, {
+    topics: topic,
+    waitInterval: 0,
+    objectMode: false
+  });
 
-  consumer.connect();
+  stream.on('error', function(err) {
+    if (err) console.log(err);
+    process.exit(1);
+  });
 
-  consumer.on('ready', function(){
-    consumer.subscribe([topic]);
-    consumer.consume();
-    console.log(consumer.consume());
-  }).on('data', function(data){
-    console.log(data.value.toString());
-    res.send(data.value.toString());
-    return;
+  stream.pipe(process.stdout);
+
+  stream.on('error', function(err) {
+    console.log(err);
+    process.exit(1);
+  });
+
+  stream.consumer.on('event.error', function(err) {
+    console.log(err);
   });
   // requestedTopicPath = dataPath + topic + '_val.json';
   // fs.stat(requestedTopicPath, function(err, data) {
