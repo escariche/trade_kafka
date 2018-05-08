@@ -66,10 +66,8 @@ try:
     toPublish = getBPM()
     producer.send(topic, msg)
     producer.flush()
-except KafkaTimeoutError as error:
-    print(error)
 except:
-    print("Unexpected error: ", sys.exc_info()[0])
+    print("Error: ", sys.exc_info()[0])
     raise
 
 producer.close(3600)
