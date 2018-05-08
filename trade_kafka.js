@@ -13,6 +13,9 @@ var kafkaPath = '/home/ec2-user/trade_kafka/';
 var dataPath = '/home/ec2-user/trade_kafka/consumer_data/';
 
 router.use(function (req,res,next) {
+  if (status == 404){
+    res.send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
+  }
   console.log("/" + req.method);
   next();
 });
@@ -40,7 +43,7 @@ router.post("/:topicName",function(req,res){
   console.log("HTTP POST request was received");
   var topic = req.params.topicName; //public address
   //msgToSend may be taken from HTTP request
-  var msgToSend = Date.now();
+  var msgToSend = Date.now().toString();
   console.log("Topic to create", topic);
 
   var producer = new Kafka.Producer({
