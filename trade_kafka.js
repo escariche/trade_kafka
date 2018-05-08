@@ -179,8 +179,11 @@ router.get("/consumer/:topicName",function(req,res){
   consumer.connect();
 
   consumer.on('ready', function () {
+    console.log('ready');
     consumer.subscribe([topic]);
+    console.log('subs');
     consumer.consume();
+    console.log('consume');
   }).on('data', function(data) {
     console.log(data.value.toString());
     res.status(200).send(data.value.toString());
