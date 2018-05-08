@@ -56,6 +56,7 @@ router.post("/:topicName",function(req,res){
     console.error('Error from producer');
     console.error(err);
   });
+  producer.connect();
 
   producer.on('ready', function(){
     producer.getMetadata(null, function(err, mnetadata){
@@ -99,7 +100,6 @@ router.post("/:topicName",function(req,res){
     res.send(err);
   });
 
-  producer.connect();
 
   setTimeout(function() {
     producer.disconnect();
