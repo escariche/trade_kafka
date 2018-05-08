@@ -102,32 +102,32 @@ router.get("/:topicName",function(req,res){
   var group = 'All Companies';
   console.log("Requested topic: " + topic);
 
-  var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': 'localhost:9091',
+  var consumer = new Kafka.KafkaConsumer({
     'group.id': group,
-    'socket.keepalive.enable': true,
-    'enable.auto.commit': false
-  }, {}, {
-    topics: topic,
-    waitInterval: 0,
-    objectMode: false
+    'metadata.broker.list': 'localhost:9091'
+  }, {});
+
+  consumer.on('event.log', function(log) {
+    console.log("Event log", log);
   });
 
-  stream.on('error', function(err) {
-    if (err) console.log(err);
-    process.exit(1);
+  consumer.on('event.error', function(err) {
+    console.error('Error from consumer');
+    console.error(err);
   });
 
-  stream.pipe(process.stdout);
-
-  stream.on('error', function(err) {
-    console.log(err);
-    process.exit(1);
+  consumer.on('ready', function(){
+    consumer.subscribe([topic]);
+    consumer.consume();
+  }).on('data', function(data){
+    console.log(data.value.toString());
+    res.send(data.value.toString());
+    return;
   });
-
-  stream.consumer.on('event.error', function(err) {
-    console.log(err);
-  });
+  consumer.connect();
+  setTimeout(function() {
+    consumer.disconnect();
+  }, 30000);
   // requestedTopicPath = dataPath + topic + '_val.json';
   // fs.stat(requestedTopicPath, function(err, data) {
   //   if (err.code == 'ENOENT') {
