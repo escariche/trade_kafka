@@ -44,7 +44,7 @@ router.post("/:topicName",function(req,res){
   console.log("Topic to create", topic);
 
   var producer = new Kafka.Producer({
-    'metadata.broker.list' : 'localhost:9090, localhost:9091',
+    'metadata.broker.list' : '172.31.34.212:9090, 172.31.34.212:9091',
     'dr_cb' : true
   });
 
