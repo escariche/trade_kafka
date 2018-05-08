@@ -13,9 +13,6 @@ var kafkaPath = '/home/ec2-user/trade_kafka/';
 var dataPath = '/home/ec2-user/trade_kafka/consumer_data/';
 
 router.use(function (req,res,next) {
-  if (status == 404){
-    res.send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
-  }
   console.log("/" + req.method);
   next();
 });
@@ -84,16 +81,18 @@ router.post("/:topicName",function(req,res){
     console.error('Error from producer');
     console.error(err);
     res.send(err);
+    return;
   })
 });
 
-//CONSUMER - HISTORIC
-router.get("/historic/:topicName",function(req,res){
+//CONSUMER
+router.get("/:topicName",function(req,res){
   console.log("HTTP GET/historic request was received");
   var topic = req.params.topicName;
   //TODO EXTRA - create groups of subscribers
   var group = 'All Companies';
   console.log("Requested topic: " + topic);
+
   var consumer = new Kafka.KafkaConsumer({
     'group.id': group,
     'metadata.broker.list': 'localhost:9091'
@@ -104,9 +103,11 @@ router.get("/historic/:topicName",function(req,res){
   consumer.on('ready', function(){
     consumer.subscribe([topic]);
     consumer.consume();
+    console.log(consumer.consume());
   }).on('data', function(data){
     console.log(data.value.toString());
     res.send(data.value.toString());
+    return;
   });
   // requestedTopicPath = dataPath + topic + '_val.json';
   // fs.stat(requestedTopicPath, function(err, data) {
@@ -123,36 +124,3 @@ router.get("/historic/:topicName",function(req,res){
   //   res.sendFile(requestedTopicPath);
   // });
 });
-
-//CONSUMER - SUBSCRIBE
-router.get("/subscribe/:topicName",function(req,res){
-  console.log("HTTP GET/subscribe request was received");
-  var topic = req.params.topicName;
-  console.log("Requested topic: " + topic);
-  options.args.push(topic);
-  console.log("options.args", options.args);
-  /*requestedTopicPath = dataPath + topic + '_val.json';
-  fs.stat(requestedTopicPath, function(err, data) {
-    if (err.code == 'ENOENT') {
-      console.log('The historical from the requested topic was not found.', err);
-      res.send(err);
-      return;
-    } else if (err){
-      console.log(err);
-      res.send(err);
-      return;
-    }
-    console.log('Requested topic exists');
-  });*/
-  PythonShell.run('consumer.py', options, function (err, results) {
-    options.args = []
-    console.log("attempt to empty options.args", options.args);
-    if (err) {
-      console.log('Error when running consumer.py script: ' + err);
-      res.send(err);
-      return;
-    }
-    console.log('Running consumer.py script for subscribing to requested topic.');
-    console.log('results: %j', results);
-  });
-  });
