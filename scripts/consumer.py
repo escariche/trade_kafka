@@ -16,7 +16,7 @@ myPrivateIP = socket.gethostbyname(socket.gethostname())
 consumer = KafkaConsumer(bootstrap_servers=[myPrivateIP + ':9091'], api_version=(0,10))
 
 #TODO
-consumerDataPath = '/home/ec2-user/kafka/kafka_2.11-1.0.0/consumer_data/'
+consumerDataPath = '/home/ec2-user/consumer_data/'
 
 try:
     topic = argv[1]

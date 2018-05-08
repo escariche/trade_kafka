@@ -51,27 +51,65 @@ router.post("/:topicName",function(req,res){
   });
 });
 
-//CONSUMER
-router.get("/:topicName",function(req,res){
-    var topic = req.params.topicName;
-    options.args.push(topic);
-    console.log("Requested topic: " + topic);
-    //TODO
-    requestedTopicPath = dataPath + topic + '_val.json'
-    fs.stat(requestedTopicPath, function(err, data) {
-      if (err) {
-        console.log('Topic was not found.');
-        PythonShell.run('consumer.py', options, function (err, results){
-          console.log('Running consumer.py script for subscribing to requested topic.');
-          if (err){
-            console.log('Error when running consumer.py script: ' + err);
-          };
-          console.log('results: %j', results);
-        });
-        res.send("The historical from the requested topic was not found. Please try again later and check the name of the topic if the error persists.");
-      }else{
-        console.log('Requested topic exists');
-        res.sendFile(requestedTopicPath);
-      }
-     });
+//CONSUMER - HISTORIC
+router.get("/historic/:topicName",function(req,res){
+  console.log("HTTP GET/historic request was received");
+  var topic = req.params.topicName;
+  options.args.push(topic);
+  console.log("Requested topic: " + topic);
+  requestedTopicPath = dataPath + topic + '_val.json';
+  fs.stat(requestedTopicPath, function(err, data) {
+    if (err.code == 'ENOENT') {
+      console.log('The historical from the requested topic was not found.', err);
+      res.send(err);
+      return;
+    } else if (err){
+      console.log(err);
+      res.send(err);
+      return;
+    }
+    console.log('Requested topic exists');
+    res.sendFile(requestedTopicPath);
+  });
+  /*PythonShell.run('consumer.py', options, function (err, results) {
+    if (err) {
+      console.log('Error when running consumer.py script: ' + err);
+      res.send(err);
+      return;
+    }
+
+    console.log('Running consumer.py script for subscribing to requested topic.');
+    console.log('results: %j', results);
+  });*/
+  });
+
+//CONSUMER - SUBSCRIBE
+router.get("/subscribe/:topicName",function(req,res){
+  console.log("HTTP GET/subscribe request was received");
+  var topic = req.params.topicName;
+  options.args.push(topic);
+  console.log("Requested topic: " + topic);
+
+  /*requestedTopicPath = dataPath + topic + '_val.json';
+  fs.stat(requestedTopicPath, function(err, data) {
+    if (err.code == 'ENOENT') {
+      console.log('The historical from the requested topic was not found.', err);
+      res.send(err);
+      return;
+    } else if (err){
+      console.log(err);
+      res.send(err);
+      return;
+    }
+    console.log('Requested topic exists');
+  });*/
+  PythonShell.run('consumer.py', options, function (err, results) {
+    if (err) {
+      console.log('Error when running consumer.py script: ' + err);
+      res.send(err);
+      return;
+    }
+    console.log('Running consumer.py script for subscribing to requested topic.');
+    console.log('results: %j', results);
+  });
   });
