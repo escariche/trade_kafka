@@ -42,6 +42,7 @@ router.post("/:topicName",function(req,res){
   console.log(req.body);
   console.log(topic);
   PythonShell.run('producer.py', options, function(err, results) {
+    options.args = []
     if (err) {
       console.log("Error when running producer.py", err);
       res.send(err);
@@ -55,7 +56,6 @@ router.post("/:topicName",function(req,res){
 router.get("/historic/:topicName",function(req,res){
   console.log("HTTP GET/historic request was received");
   var topic = req.params.topicName;
-  options.args.push(topic);
   console.log("Requested topic: " + topic);
   requestedTopicPath = dataPath + topic + '_val.json';
   fs.stat(requestedTopicPath, function(err, data) {
@@ -71,17 +71,7 @@ router.get("/historic/:topicName",function(req,res){
     console.log('Requested topic exists');
     res.sendFile(requestedTopicPath);
   });
-  /*PythonShell.run('consumer.py', options, function (err, results) {
-    if (err) {
-      console.log('Error when running consumer.py script: ' + err);
-      res.send(err);
-      return;
-    }
-
-    console.log('Running consumer.py script for subscribing to requested topic.');
-    console.log('results: %j', results);
-  });*/
-  });
+});
 
 //CONSUMER - SUBSCRIBE
 router.get("/subscribe/:topicName",function(req,res){
@@ -104,6 +94,7 @@ router.get("/subscribe/:topicName",function(req,res){
     console.log('Requested topic exists');
   });*/
   PythonShell.run('consumer.py', options, function (err, results) {
+    options.args = []
     if (err) {
       console.log('Error when running consumer.py script: ' + err);
       res.send(err);
