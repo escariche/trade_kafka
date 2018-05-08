@@ -19,7 +19,7 @@ router.use(function (req,res,next) {
 
 router.get("/",function(req,res){
   //TODO
-  res.send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
+  res.status(404).send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
 });
 
 app.use("/",router);
@@ -78,8 +78,7 @@ router.post("/:topicName",function(req,res){
           // you can send an opaque token here, which gets passed along
           // to your delivery reports
         );
-        console.log(producer.getMetadata());
-        res.status(200).send(producer.getMetadata());
+        res.status(200).send();
       } catch (err) {
         console.error('A problem occurred when sending our message');
         console.error(err);
@@ -100,7 +99,6 @@ router.post("/:topicName",function(req,res){
 
   setTimeout(function() {
     producer.disconnect();
-    return;
     console.log("Producer disconnected");
   }, 30000);
 });
@@ -131,8 +129,8 @@ router.get("/:topicName",function(req,res){
     consumer.subscribe([topic]);
     consumer.consume();
   }).on('data', function(data){
-    console.log(data.value.toString());
-    res.send(data.value.toString());
+    console.log("data", data.value.toString());
+    res.status(200).send(data.value.toString());
     return;
   });
   consumer.connect();
