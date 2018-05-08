@@ -48,7 +48,16 @@ router.post("/:topicName",function(req,res){
     'dr_cb' : true
   });
 
-  console.log(producer.getMetaData);
+
+  producer.getMetadata(opts, function(err, metadata) {
+    if (err) {
+      console.error('Error getting metadata');
+      console.error(err);
+    } else {
+      console.log('Got metadata');
+      console.log(metadata);
+    }
+  });
 
   producer.on('event.log', function(log) {
     console.log("LOG", log);
