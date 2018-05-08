@@ -1,5 +1,6 @@
 #For Apache Kafka
-from kafka import KafkaProducer, ClusterMetadata
+from kafka import KafkaProducer
+from kafka.cluster import ClusterMetadata
 from kafka.errors import KafkaError
 
 #For threading
