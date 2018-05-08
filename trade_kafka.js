@@ -59,7 +59,7 @@ router.post("/:topicName",function(req,res){
           // this defaults to -1 - which will use librdkafka's default partitioner (consistent random for keyed messages, random for unkeyed messages)
           null,
           // Message to send. Must be a buffer
-          new Buffer('Awesome message'),
+          new Buffer(msgToSend),
           // for keyed messages, we also specify the key - note that this field is optional
           null,
           // you can send a timestamp here. If your broker version supports it,
@@ -82,66 +82,43 @@ router.post("/:topicName",function(req,res){
     console.error(err);
     res.send(err);
   })
-
-
-  // var stream = Kafka.Producer.createWriteStream({
-  //   'metadata.broker.list' : 'localhost:9090, localhost:9091'
-  // }, {}, {
-  //   topic : topic
-  // });
-  //
-  // var queuedSuccess = stream.write(new Buffer(msgToSend));
-  //
-  // if (queuedSuccess) {
-  //   console.log('We queued our message!');
-  // } else {
-  // // Note that this only tells us if the stream's queue is full,
-  // // it does NOT tell us if the message got to Kafka!  See below...
-  //   console.log('Too many messages in our queue already');
-  // }
-  //
-  // stream.on('error', function (err) {
-  //   // Here's where we'll know if something went wrong sending to Kafka
-  //   console.error('Error in our kafka stream');
-  //   console.error(err);
-  //   res.send(error);
-  //   return;
-  // })
-
-  // options.args.push(topic);
-  // console.log("options.args", options.args);
-  //console.log(req.body);
-  // PythonShell.run('producer.py', options, function(err, results) {
-  //   options.args = []
-  //   console.log("attempt to empty options.args", options.args);
-  //   if (err) {
-  //     console.log("Error when running producer.py", err);
-  //     res.send(err);
-  //     return;
-  //   }
-  //   res.sendStatus(200);
-  // });
 });
 
 //CONSUMER - HISTORIC
 router.get("/historic/:topicName",function(req,res){
   console.log("HTTP GET/historic request was received");
   var topic = req.params.topicName;
+  //TODO EXTRA - create groups of subscribers
+  var group = 'All Companies';
   console.log("Requested topic: " + topic);
-  requestedTopicPath = dataPath + topic + '_val.json';
-  fs.stat(requestedTopicPath, function(err, data) {
-    if (err.code == 'ENOENT') {
-      console.log('The historical from the requested topic was not found.', err);
-      res.send(err);
-      return;
-    } else if (err){
-      console.log(err);
-      res.send(err);
-      return;
-    }
-    console.log('Requested topic exists');
-    res.sendFile(requestedTopicPath);
+  var consumer = new Kafka.KafkaConsumer({
+    'group.id': group,
+    'metadata.broker.list': 'localhost:9091'
+  }, {});
+
+  consumer.connect();
+
+  consumer.on('ready', function(){
+    consumer.subscribe([topic]);
+    consumer.consume();
+  }).on('data', function(data){
+    console.log(data.value.toString());
+    res.send(data.value.toString());
   });
+  // requestedTopicPath = dataPath + topic + '_val.json';
+  // fs.stat(requestedTopicPath, function(err, data) {
+  //   if (err.code == 'ENOENT') {
+  //     console.log('The historical from the requested topic was not found.', err);
+  //     res.send(err);
+  //     return;
+  //   } else if (err){
+  //     console.log(err);
+  //     res.send(err);
+  //     return;
+  //   }
+  //   console.log('Requested topic exists');
+  //   res.sendFile(requestedTopicPath);
+  // });
 });
 
 //CONSUMER - SUBSCRIBE
