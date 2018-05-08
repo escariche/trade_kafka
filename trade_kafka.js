@@ -205,7 +205,7 @@ router.get("/consumer/:topicName",function(req,res){
   });
 
 
-  var stream = consumer.createReadStream({
+  var stream = KafkaConsumer.createReadStream({
     'group.id': group,
     'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091'
   },{
