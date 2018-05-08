@@ -59,6 +59,7 @@ router.post("/:topicName",function(req,res){
   producer.connect();
 
   producer.on('ready', function(){
+    console.log("ready");
     producer.getMetadata(null, function(err, mnetadata){
       if (err) {
         console.error('Error getting metadata');
