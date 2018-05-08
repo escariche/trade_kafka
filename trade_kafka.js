@@ -58,6 +58,15 @@ router.post("/:topicName",function(req,res){
   });
 
   producer.on('ready', function(){
+    producer.getMetadata(null, function(err, mnetadata){
+      if (err) {
+        console.error('Error getting metadata');
+        console.error(err);
+      } else {
+        console.log('Got metadata');
+        console.log(metadata);
+      }
+    });
     try {
         producer.produce(
           // Topic to send the message to
