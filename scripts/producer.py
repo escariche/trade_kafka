@@ -12,7 +12,7 @@ import random
 import json
 
 #For argument reading
-#from sys import argv
+from sys import argv
 import sys
 
 #For URL handling

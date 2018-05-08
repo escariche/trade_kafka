@@ -3,6 +3,7 @@ from kafka import KafkaConsumer, KafkaClient
 from kafka.errors import KafkaError
 #imports for local system
 from sys import argv
+import sys
 import os.path
 #imports for communication
 from urllib2 import urlopen
