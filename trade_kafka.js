@@ -182,7 +182,7 @@ router.get("/consumer/:topicName",function(req,res){
   var numMsg = 5;
 
   consumer.on('ready', function (arg) {
-    console.log('ready', arg.toString());
+    console.log('ready', JSON.stringify(arg));
     consumer.getMetadata(null, function(err, metadata){
       if (err) {
         console.error('Error getting metadata');
@@ -208,7 +208,7 @@ router.get("/consumer/:topicName",function(req,res){
       console.log('Calling commit');
       consumer.commit(data);
     }
-    
+
     console.log(data.value.toString());
     res.status(200).send(data.value.toString());
   });
