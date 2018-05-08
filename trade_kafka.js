@@ -60,7 +60,7 @@ router.post("/:topicName",function(req,res){
 
   producer.on('ready', function(){
     console.log("ready");
-    producer.getMetadata(null, function(err, mnetadata){
+    producer.getMetadata(null, function(err, metadata){
       if (err) {
         console.error('Error getting metadata');
         console.error(err);
@@ -118,7 +118,7 @@ router.get("/:topicName",function(req,res){
   var Transform = require('stream').Transform;
 
   var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': 'localhost:9090, localhost:9091',
+    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
     'group.id': group,
     'socket.keepalive.enable': true,
     'enable.auto.commit': false
