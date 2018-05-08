@@ -76,7 +76,7 @@ router.post("/:topicName",function(req,res){
           // you can send an opaque token here, which gets passed along
           // to your delivery reports
         );
-        res.send(status);
+        res.status(200);
       } catch (err) {
         console.error('A problem occurred when sending our message');
         console.error(err);
