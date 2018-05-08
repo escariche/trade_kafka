@@ -13,7 +13,7 @@ import socket
 #KafkaConsumer settings
 myIP = urlopen('http://ip.42.pl/raw').read()
 myPrivateIP = socket.gethostbyname(socket.gethostname())
-consumer = KafkaConsumer(bootstrap_servers=[myPrivateIP + ':9091'], api_version=(0,10))
+consumer = KafkaConsumer(bootstrap_servers=[myPrivateIP + ':9090', myPrivateIP + ':9091'], api_version=(0,10))
 
 #TODO
 consumerDataPath = '/home/ec2-user/consumer_data/'
@@ -59,3 +59,5 @@ for message in consumer:
         print("Content of new file: ", content)
         with open(oFilename, "w") as outfile:
             json.dump(content, outfile)
+
+consumer.close(3600)

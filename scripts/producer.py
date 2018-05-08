@@ -12,7 +12,8 @@ import random
 import json
 
 #For argument reading
-from sys import argv
+#from sys import argv
+import sys
 
 #For URL handling
 from urllib2 import urlopen
@@ -26,24 +27,18 @@ import socket
 myIP = urlopen('http://ip.42.pl/raw').read()
 myPrivateIP = socket.gethostbyname(socket.gethostname())
 print("myPrivateIP", myPrivateIP)
-producer = KafkaProducer(bootstrap_servers=[myPrivateIP + ':9090'], api_version=(0,10))
+producer = KafkaProducer(bootstrap_servers=[myPrivateIP + ':9090', myPrivateIP + ':9091'], api_version=(0,10))
 
 #Assignment of arguments
 try:
     topic = argv[1]
+    print("Topic found as arg ", topic)
 except IndexError:
     print(IndexError)
     quit()
-     
+
 #Creation of message structure
 msgJSON = {}
-
-#Encrytion procedure
-# random_generator = Random.new().read
-# key = RSA.generate(1024, random_generator)
-# print("encryption key: ", key)
-# publicKey =  key.publickey()
-# print("public key: ", publicKey)
 
 def getBPM():
     data = {}
@@ -62,22 +57,30 @@ def getBPM():
     print("Message as JSON: ", msgJSON)
     return str(json_formated_sample).encode()
 
-def publish(msg):
-    print("This message will be published: ", msg)
-    print("In the topic: ", topic)
+# def publish(msg):
+#     print("This message will be published: ", msg)
+#     print("In the topic: ", topic)
+#     producer.send(topic, msg)
+#     producer.flush()
+try:
+    toPublish = getBPM()
     producer.send(topic, msg)
     producer.flush()
+except KafkaTimeoutError as error:
+    print(error)
+except:
+    print("Unexpected error: ", sys.exc_info()[0])
+    raise
 
-
+producer.close(3600)
 
 #for publishing
-def sendMsg(sc):
-    print "Sending message..."
+#def sendMsg():
+    #print "Sending message..."
     ## TODO: what to publish
-    toPublish = getBPM() #change This
-    publish(toPublish)
-    s.enter(5, 1, sendMsg, (sc,))
+    #publish(toPublish)
+    #s.enter(5, 1, sendMsg, (sc,))
 
-s = sched.scheduler(time.time, time.sleep)
-s.enter(5, 1, sendMsg, (s,))
-s.run()
+#s = sched.scheduler(time.time, time.sleep)
+#s.enter(5, 1, sendMsg, (s,))
+#s.run()
