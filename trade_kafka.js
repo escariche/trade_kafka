@@ -38,11 +38,13 @@ var options = {
 router.post("/:topicName",function(req,res){
   console.log("HTTP POST request was received");
   var topic = req.params.topicName; //public address
-  options.args.push(topic);
-  console.log(req.body);
   console.log(topic);
+  options.args.push(topic);
+  console.log("options.args", option.args);
+  //console.log(req.body);
   PythonShell.run('producer.py', options, function(err, results) {
     options.args = []
+    console.log("attempt to empty options.args", options.args);
     if (err) {
       console.log("Error when running producer.py", err);
       res.send(err);
@@ -77,9 +79,9 @@ router.get("/historic/:topicName",function(req,res){
 router.get("/subscribe/:topicName",function(req,res){
   console.log("HTTP GET/subscribe request was received");
   var topic = req.params.topicName;
-  options.args.push(topic);
   console.log("Requested topic: " + topic);
-
+  options.args.push(topic);
+  console.log("options.args", option.args);
   /*requestedTopicPath = dataPath + topic + '_val.json';
   fs.stat(requestedTopicPath, function(err, data) {
     if (err.code == 'ENOENT') {
@@ -95,6 +97,7 @@ router.get("/subscribe/:topicName",function(req,res){
   });*/
   PythonShell.run('consumer.py', options, function (err, results) {
     options.args = []
+    console.log("attempt to empty options.args", options.args);
     if (err) {
       console.log('Error when running consumer.py script: ' + err);
       res.send(err);
