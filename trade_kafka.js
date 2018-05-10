@@ -199,11 +199,16 @@ router.get("/consumer/:topicName",function(req,res){
       });
     });
 
-    metadataProm.then(function(){
+    metadataProm.then(function(metadata){
+      console.log(metadata);
+      var metadataJSON = JSON.parse(metadata);
+      console.log('Topics', metadataJSON.topics);
       consumer.subscribe([topic]);
       console.log('subs');
       consumer.consume();
       console.log('consume', consumer.consume());
+    }, function(reason){
+      console.log(reason);
     });
   });
   // .on('data', function(data) {
