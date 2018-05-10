@@ -192,6 +192,8 @@ router.get("/consumer/:topicName",function(req,res){
       } else {
         console.log('Got metadata');
         console.log(metadata);
+        var resMetadata = 'Metadata: \n' + metadata;
+        res.send(resMetadata);
       }
     }).then(function(){
 
