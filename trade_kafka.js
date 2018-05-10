@@ -202,7 +202,7 @@ router.get("/consumer/:topicName",function(req,res){
     metadataProm.then(function(metadata){
       console.log(metadata);
       var metadataJSON = JSON.parse(metadata);
-      console.log('Topics', metadataJSON.topics);
+      console.log('Metadata JSON', metadataJSON);
       consumer.subscribe([topic]);
       console.log('subs');
       consumer.consume();
