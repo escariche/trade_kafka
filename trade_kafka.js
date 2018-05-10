@@ -185,24 +185,26 @@ router.get("/consumer/:topicName",function(req,res){
 
   consumer.on('ready', function (arg) {
     console.log('ready', JSON.stringify(arg));
-    consumer.getMetadata(null, function(err, metadata){
-      if (err) {
-        console.error('Error getting metadata');
-        console.error(err);
-      } else {
-        console.log('Got metadata');
-        console.log(metadata);
-        var resMetadata = 'Metadata: \n' + metadata;
-        res.send(resMetadata);
-      }
-    }).then(function(){
+    var metadataProm = new Promise(function(resolve, reject) {
+      consumer.getMetadata(null, function(err, metadata){
+        if (err) {
+          console.error('Error getting metadata');
+          console.error(err);
+          reject(err);
+        } else {
+          console.log('Got metadata');
+          //console.log(metadata);
+          resolve(metadata);
+        }
+      });
+    });
 
+    metadataProm.then(function(){
       consumer.subscribe([topic]);
       console.log('subs');
       consumer.consume();
-      console.log('consume');
+      console.log('consume', consumer.consume());
     });
-
   });
   // .on('data', function(data) {
   //   console.log(data.value.toString());
