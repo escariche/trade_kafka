@@ -1,12 +1,17 @@
-Java HotSpot(TM) 64-Bit Server VM (25.141-b15) for linux-amd64 JRE (1.8.0_141-b15), built on Jul 12 2017 04:21:34 by "java_re" with gcc 4.3.0 20080428 (Red Hat 4.3.0-8)
-Memory: 4k page, physical 1016656k(126176k free), swap 0k(0k free)
-CommandLine flags: -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -XX:InitialHeapSize=134217728 -XX:+ManagementServer -XX:MaxHeapSize=134217728 -XX:MaxNewSize=44740608 -XX:MaxTenuringThreshold=6 -XX:NewSize=44740608 -XX:OldPLABSize=16 -XX:OldSize=89477120 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:+UseParNewGC 
-2018-05-03T11:12:08.799+0000: 1.101: [GC (Allocation Failure) 2018-05-03T11:12:08.799+0000: 1.101: [ParNew: 34944K->4352K(39296K), 0.0164320 secs] 34944K->7309K(126720K), 0.0165109 secs] [Times: user=0.02 sys=0.00, real=0.02 secs] 
-Heap
- par new generation   total 39296K, used 21692K [0x00000000f8000000, 0x00000000faaa0000, 0x00000000faaa0000)
-  eden space 34944K,  49% used [0x00000000f8000000, 0x00000000f90ef2f0, 0x00000000fa220000)
-  from space 4352K, 100% used [0x00000000fa660000, 0x00000000faaa0000, 0x00000000faaa0000)
-  to   space 4352K,   0% used [0x00000000fa220000, 0x00000000fa220000, 0x00000000fa660000)
- concurrent mark-sweep generation total 87424K, used 2957K [0x00000000faaa0000, 0x0000000100000000, 0x0000000100000000)
- Metaspace       used 16966K, capacity 17116K, committed 17280K, reserved 1064960K
-  class space    used 2572K, capacity 2658K, committed 2688K, reserved 1048576K
+OpenJDK 64-Bit Server VM (24.171-b01) for linux-amd64 JRE (1.7.0_171-b01), built on Mar 15 2018 21:14:49 by "mockbuild" with gcc 4.8.5 20150623 (Red Hat 4.8.5-11)
+Memory: 4k page, physical 1011176k(490256k free), swap 0k(0k free)
+CommandLine flags: -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -XX:InitialHeapSize=134217728 -XX:+ManagementServer -XX:MaxHeapSize=134217728 -XX:MaxNewSize=44740608 -XX:MaxTenuringThreshold=6 -XX:NewSize=44740608 -XX:OldPLABSize=16 -XX:OldSize=89477120 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:-UseParNewGC 
+2018-05-10T10:23:53.754+0000: 2.645: [GC2018-05-10T10:23:53.754+0000: 2.645: [DefNew: 34944K->4351K(39296K), 0.0343930 secs] 34944K->6897K(126720K), 0.0344770 secs] [Times: user=0.01 sys=0.00, real=0.04 secs] 
+2018-05-10T10:23:54.854+0000: 3.745: [GC2018-05-10T10:23:54.854+0000: 3.745: [DefNew: 39295K->2611K(39296K), 0.0451320 secs] 41841K->6882K(126720K), 0.0451870 secs] [Times: user=0.02 sys=0.00, real=0.05 secs] 
+2018-05-10T10:23:54.913+0000: 3.804: [GC [1 CMS-initial-mark: 4271K(87424K)] 7523K(126720K), 0.0015270 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+2018-05-10T10:23:54.916+0000: 3.806: [CMS-concurrent-mark-start]
+2018-05-10T10:23:54.969+0000: 3.860: [CMS-concurrent-mark: 0.052/0.053 secs] [Times: user=0.03 sys=0.01, real=0.05 secs] 
+2018-05-10T10:23:54.969+0000: 3.860: [CMS-concurrent-preclean-start]
+2018-05-10T10:23:54.970+0000: 3.860: [CMS-concurrent-preclean: 0.001/0.001 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+2018-05-10T10:23:54.977+0000: 3.868: [GC[YG occupancy: 4351 K (39296 K)]2018-05-10T10:23:54.977+0000: 3.868: [Rescan (non-parallel) 2018-05-10T10:23:54.977+0000: 3.868: [grey object rescan, 0.0002040 secs]2018-05-10T10:23:54.977+0000: 3.868: [root rescan, 0.0018240 secs], 0.0020470 secs]2018-05-10T10:23:54.979+0000: 3.870: [weak refs processing, 0.0000280 secs]2018-05-10T10:23:54.979+0000: 3.870: [class unloading, 0.0007660 secs]2018-05-10T10:23:54.980+0000: 3.871: [scrub symbol table, 0.0018690 secs]2018-05-10T10:23:54.982+0000: 3.872: [scrub string table, 0.0001830 secs] [1 CMS-remark: 4271K(87424K)] 8622K(126720K), 0.0050280 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+2018-05-10T10:23:54.982+0000: 3.873: [CMS-concurrent-sweep-start]
+2018-05-10T10:23:54.985+0000: 3.875: [GC2018-05-10T10:23:54.985+0000: 3.875: [DefNew: 4351K->192K(39296K), 0.0191200 secs] 6078K->2487K(126720K), 0.0191680 secs] [Times: user=0.00 sys=0.00, real=0.02 secs] 
+2018-05-10T10:23:55.005+0000: 3.896: [CMS-concurrent-sweep: 0.004/0.023 secs] [Times: user=0.01 sys=0.00, real=0.03 secs] 
+2018-05-10T10:23:55.008+0000: 3.899: [CMS-concurrent-reset-start]
+2018-05-10T10:23:55.010+0000: 3.901: [CMS-concurrent-reset: 0.002/0.002 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+2018-05-10T10:38:19.514+0000: 868.404: [GC2018-05-10T10:38:19.514+0000: 868.404: [DefNew: 35136K->985K(39296K), 0.0050900 secs] 37431K->3279K(126720K), 0.0051700 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
