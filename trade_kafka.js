@@ -143,7 +143,8 @@ router.get("/stream/:topicName",function(req,res){
     if (err) {
       console.log(err);
     }
-    process.exit(1);
+    res.send(err);
+    //process.exit(1);
   });
 
   stream.pipe(process.stdout);
@@ -153,7 +154,8 @@ router.get("/stream/:topicName",function(req,res){
       if (err) {
         console.log(err);
       }
-      process.exit(1);
+      res.send(err);
+      //process.exit(1);
     });
 
     stream.consumer.on('event.error', function(err){
@@ -191,12 +193,14 @@ router.get("/consumer/:topicName",function(req,res){
         console.log('Got metadata');
         console.log(metadata);
       }
+    }).then(function(){
+
+      consumer.subscribe([topic]);
+      console.log('subs');
+      consumer.consume();
+      console.log('consume');
     });
 
-    consumer.subscribe([topic]);
-    console.log('subs');
-    consumer.consume();
-    console.log('consume');
   });
   // .on('data', function(data) {
   //   console.log(data.value.toString());
