@@ -208,7 +208,7 @@ fi
 
 # Memory options
 if [ -z "$KAFKA_HEAP_OPTS" ]; then
-  KAFKA_HEAP_OPTS="-Xmx256M"
+  KAFKA_HEAP_OPTS="-Xmx128M"
 fi
 
 # JVM performance options
