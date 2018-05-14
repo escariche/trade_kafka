@@ -112,7 +112,7 @@ router.post("/:topicName",function(req,res){
 
 //CONSUMER
 router.get("/stream/:topicName",function(req,res){
-  console.log("HTTP GET request was received");
+  console.log("HTTP GET stream request was received");
   var topic = req.params.topicName;
   //TODO EXTRA - create groups of subscribers
   var group = 'All Companies';
@@ -147,21 +147,11 @@ router.get("/stream/:topicName",function(req,res){
     //process.exit(1);
   });
 
-  stream.pipe(process.stdout);
-
-
-    stream.on('error', function(err){
-      if (err) {
-        console.log(err);
-      }
-      res.send(err);
-      //process.exit(1);
-    });
-
-    stream.consumer.on('event.error', function(err){
-      console.log(err);
-    });
-
+  stream.on('data', function(message) {
+    console.log('Got message');
+    console.log(message.value.toString());
+    res.status(200).send(message.value.toString());
+  });
 });
 
 router.get("/consumer/:topicName",function(req,res){
