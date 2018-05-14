@@ -118,18 +118,8 @@ router.get("/stream/:topicName",function(req,res){
   var group = 'All Companies';
   console.log("Requested topic: " + topic);
 
-  var Transform = require('stream').Transform;
-
-  var brokerListConsumer;
-  if (brokerList === undefined) {
-    brokerListConsumer = '172.31.34.212:9090, 172.31.34.212:9091';
-    console.log(brokerList);
-  } else {
-    console.log(brokerList);
-    brokerListConsumer = brokerList;
-  }
   var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': brokerListConsumer,
+    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
     'group.id': group,
     'socket.keepalive.enable': true,
     'enable.auto.commit': false
@@ -164,17 +154,11 @@ router.get("/consumer/:topicName",function(req,res){
   var consumer = new Kafka.KafkaConsumer({
     'group.id': group,
     'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
-  }, {
-
-  });
+  }, {});
 
   consumer.connect();
 
-  var counter = 0;
-  var numMsg = 5;
-
-  consumer.on('ready', function (arg) {
-    console.log('ready', JSON.stringify(arg));
+  consumer.on('ready', function (){
     var metadataProm = new Promise(function(resolve, reject) {
       consumer.getMetadata(null, function(err, metadata){
         if (err) {
@@ -190,6 +174,7 @@ router.get("/consumer/:topicName",function(req,res){
     });
 
     metadataProm.then(function(metadata){
+      console.log(' - MetadataProm - ');
       console.log(metadata);
       var metadataJSON = JSON.parse(metadata);
       console.log('Metadata JSON', metadataJSON);
@@ -206,12 +191,7 @@ router.get("/consumer/:topicName",function(req,res){
   //   res.status(200).send(data.value.toString());
   // });
   consumer.on('data', function(data){
-    counter ++;
-    if(counter % numMsg === 0) {
-      console.log('Calling commit');
-      consumer.commit(data);
-    }
-
+    console.log('Data found');
     console.log(data.value.toString());
     res.status(200).send(data.value.toString());
   });
