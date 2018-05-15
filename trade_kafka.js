@@ -151,7 +151,7 @@ router.get("/:topicName",function(req,res){
 
     metadataProm.then(function(metadata){
       console.log(' - MetadataProm - ');
-      console.log(metadata.topic[topic]);
+      console.log(metadata.topics[topic]);
       consumer.unsubscribe();
       console.log('unsubs');
       consumer.subscribe(topic);
