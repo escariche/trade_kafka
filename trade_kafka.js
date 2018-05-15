@@ -151,7 +151,7 @@ router.get("/:topicName",function(req,res){
 
     metadataProm.then(function(metadata){
       console.log(' - MetadataProm - ');
-      console.log(metadata);
+      console.log(metadata.topic[topic]);
       consumer.unsubscribe();
       console.log('unsubs');
       consumer.subscribe(topic);
@@ -163,7 +163,7 @@ router.get("/:topicName",function(req,res){
     });
   });
 
-  var consumedData;
+  var consumedData = '';
   var offTimer = 10000;
   consumer.on('data', function(data){
     offTimer += 1000;
