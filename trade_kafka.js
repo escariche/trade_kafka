@@ -165,7 +165,7 @@ router.get("/consumer/:topicName",function(req,res){
     "auto.offset.reset": "beginning"
   });
   const numMessages = 5;
-  let counter = 0;
+  var counter = 0;
 
   consumer.on('error', function(err){
     console.log(err);
