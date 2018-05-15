@@ -187,7 +187,8 @@ router.get("/:topicName",function(req,res){
   consumer.connect();
 
   setTimeout(function() {
+    console.log('Timeout');
     res.status(200).send(consumedData);
     consumer.disconnect();
-  }, 100000);
+  }, 10000);
 });
