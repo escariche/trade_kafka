@@ -111,43 +111,10 @@ router.post("/:topicName",function(req,res){
 });
 
 //CONSUMER
-router.get("/stream/:topicName",function(req,res){
-  console.log("HTTP GET stream request was received");
-  var topic = req.params.topicName;
-  //TODO EXTRA - create groups of subscribers
-  var group = 'All Companies';
-  console.log("Requested topic: " + topic);
 
-  var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
-    'group.id': group,
-    'socket.keepalive.enable': true,
-    'enable.auto.commit': false
-  }, {}, {
-    topics: topic,
-    waitInterval: 0,
-    objectMode: false
-  });
-
-  stream.on('error', function(err){
-    if (err) {
-      console.log(err);
-    }
-    res.send(err);
-    //process.exit(1);
-  });
-
-  stream.on('data', function(message) {
-    console.log('Got message');
-    console.log(message.value.toString());
-    res.status(200).send(message.value.toString());
-  });
-});
-
-router.get("/consumer/:topicName",function(req,res){
-  console.log("HTTP GET (consumer) request was received");
+router.get("/:topicName",function(req,res){
   const topic = [req.params.topicName];
-  console.log("Requested topic: " + topic);
+  console.log("HTTP GET  request was received for topic", topic);
   const group = 'Standard Company';
   const kafkaConfig = {
     'group.id': group,
@@ -155,17 +122,11 @@ router.get("/consumer/:topicName",function(req,res){
     //There are more detailed configurations
   };
   const consumer = new Kafka.KafkaConsumer(
-    kafkaConfig,
-  //   {
-  //   'group.id': group,
-  //   'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
-  // },
-  {
-    "auto.offset.reset": "earliest"
+    kafkaConfig,{
+    "auto.offset.reset": "earliest",
+    "auto.commit.enable": "true"
   });
 
-  const numMessages = 5;
-  var counter = 0;
 
   consumer.on('error', function(err){
     console.log(err);
@@ -188,12 +149,11 @@ router.get("/consumer/:topicName",function(req,res){
       });
     });
 
-    // consumer.subscribe(topic);
-    // consumer.consume();
-
     metadataProm.then(function(metadata){
       console.log(' - MetadataProm - ');
       console.log(metadata);
+      consumer.unsubscribe();
+      console.log('unsubs');
       consumer.subscribe(topic);
       console.log('subs');
       consumer.consume();
@@ -206,25 +166,9 @@ router.get("/consumer/:topicName",function(req,res){
   var consumedData;
   consumer.on('data', function(data){
     console.log('DATA', data);
-    console.log('size', data.size);
     console.log('offset', data.offset);
-
-    counter ++;
-    if(counter % numMessages === 0){
-      console.log('Calling commit');
-      consumer.commit(data);
-      //res.status(200).send(consumedData);
-      //consumedData = '';
-      //consumer.unsubscribe();
-      //consumer.disconnect();
-    }
-    console.log('Data found');
     consumedData += data.value.toString() + '\n';
     console.log(data.value.toString());
-
-    if (data.size === data.offset){
-      console.log('all msgs read');
-    }
   });
 
   consumer.on('disconnected', function(arg){
@@ -243,6 +187,7 @@ router.get("/consumer/:topicName",function(req,res){
   consumer.connect();
 
   setTimeout(function() {
+    res.status(200).send(consumedData);
     consumer.disconnect();
-  }, 300000);
+  }, 100000);
 });
