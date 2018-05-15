@@ -164,7 +164,9 @@ router.get("/:topicName",function(req,res){
   });
 
   var consumedData;
+  var offTimer = 10000;
   consumer.on('data', function(data){
+    offTimer += 1000;
     console.log('DATA', data);
     console.log('offset', data.offset);
     consumedData += data.value.toString() + '\n';
@@ -190,5 +192,5 @@ router.get("/:topicName",function(req,res){
     console.log('Timeout');
     res.status(200).send(consumedData);
     consumer.disconnect();
-  }, 10000);
+  }, offTimer);
 });
