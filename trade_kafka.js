@@ -8,19 +8,6 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 var port = 3000;
 
-router.use(function (req,res,next) {
-  console.log("/" + req.method);
-  next();
-});
-
-router.get("/",function(req,res){
-  //TODO
-  res.status(404).send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
-});
-
-app.use("/",router);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function(err, req, res, next){
   if(err.status && err.status < 500) {
         return res.status(400).send('Request Aborted');
@@ -35,6 +22,19 @@ app.use(function(err, req, res, next){
         res.render('500', { error: err });
       }
 });
+router.use(function (req,res,next) {
+  console.log("/" + req.method);
+  next();
+});
+
+router.get("/",function(req,res){
+  //TODO
+  res.status(404).send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
+});
+
+app.use("/",router);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(port,function(){
   console.log("Live at Port " + port);
