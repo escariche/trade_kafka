@@ -4,13 +4,9 @@ var Kafka = require('node-rdkafka');
 var net = require('net');
 
 var app = express();
+var bodyParser = require('body-parser');
 var router = express.Router();
-var port = 3000;
-
-// var viewsPath = __dirname + '/views/';
-//TODO
-var kafkaPath = '/home/ec2-user/trade_kafka/';
-var dataPath = '/home/ec2-user/trade_kafka/consumer_data/';
+var port = 8080;
 
 router.use(function (req,res,next) {
   console.log("/" + req.method);
@@ -23,18 +19,12 @@ router.get("/",function(req,res){
 });
 
 app.use("/",router);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(port,function(){
   console.log("Live at Port " + port);
 });
-
-// var options = {
-//   mode: 'text',
-//   scriptPath: '/home/ec2-user/trade_kafka/scripts',
-//   pythonOptions: ['-u'],
-//   args: []
-// };
-
 
 ///// Kafka ///////
 var brokerList;
@@ -43,7 +33,7 @@ router.post("/:topicName",function(req,res){
   console.log("HTTP POST request was received");
   var topic = req.params.topicName; //public address
   //msgToSend may be taken from HTTP request
-  var msgToSend = Date.now().toString();
+  var msgToSend = req.body;
   console.log("Topic to create", topic);
 
   var producer = new Kafka.Producer({
