@@ -151,8 +151,13 @@ router.get("/:topicName",function(req,res){
 
     metadataProm.then(function(metadata){
       console.log(' - MetadataProm - ');
-      var jsonTopics = JSON.parse(metadata.topics);
-      console.log(jsonTopics);
+      console.log(metadata.topics);
+      var i = 0;
+      for(; i < metadata.topics.length; i++) {
+        if (metadata.topics[i] === topic[0]) {
+          console.log(metadata.topics[i].partitions);
+        }
+      }
       consumer.unsubscribe();
       console.log('unsubs');
       consumer.subscribe(topic);
