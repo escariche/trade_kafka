@@ -34,7 +34,7 @@ router.get("/",function(req,res){
 
 app.use("/",router);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.listen(port,function(){
   console.log("Live at Port " + port);
