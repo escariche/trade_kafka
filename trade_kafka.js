@@ -43,10 +43,10 @@ app.listen(port,function(){
 ///// Kafka ///////
 var brokerList;
 //PRODUCER
-// router.post("/:topicName",function(req,res){
-app.post("/:topicName", function(req, res){
+ router.post("/",function(req,res){
+//app.post("/:topicName", function(req, res){
   console.log("HTTP POST request was received");
-  var topic = req.params.topicName; //public address
+  var topic = req.body.topicName; //public address
   //msgToSend may be taken from HTTP request
   console.log(req.body);
   var msgToSend = Date.now().toString();
