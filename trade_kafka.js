@@ -47,7 +47,8 @@ router.post("/:topicName",function(req,res){
   console.log("Topic to create", topic);
 
   var producer = new Kafka.Producer({
-    'metadata.broker.list' : '172.31.34.212:9090, 172.31.34.212:9091',
+    // 'metadata.broker.list' : '172.31.34.212:9090, 172.31.34.212:9091',
+    "metadata.broker.list": process.env.CLOUDKARAFKA_BROKERS.split(","),
     'dr_cb' : true
   });
 
@@ -145,21 +146,35 @@ router.get("/stream/:topicName",function(req,res){
 });
 
 router.get("/consumer/:topicName",function(req,res){
-  console.log("HTTP GET request was received");
-  var topic = req.params.topicName;
-  //TODO EXTRA - create groups of subscribers
-  var group = 'All Companies';
+  console.log("HTTP GET (consumer) request was received");
+  const topic = [req.params.topicName];
   console.log("Requested topic: " + topic);
-
-  var consumer = new Kafka.KafkaConsumer({
+  const group = 'Standard Company';
+  const kafkaConfig = {
     'group.id': group,
-    'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
-  }, {});
+    "metadata.broker.list": process.env.CLOUDKARAFKA_BROKERS.split(",")
+    //There are more detailed configurations
+  };
+  const consumer = new Kafka.KafkaConsumer(
+    kafkaConfig,
+  //   {
+  //   'group.id': group,
+  //   'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
+  // },
+  {
+    "auto.offset.reset": "beginning"
+  });
+  const numMessages = 5;
+  let counter = 0;
 
-  consumer.connect();
+  consumer.on('error', function(err){
+    console.log(err);
+    res.send(err);
+  });
 
-  consumer.on('ready', function (){
-    var metadataProm = new Promise(function(resolve, reject) {
+  consumer.on('ready', function (arg){
+    console.log('Consumer ${arg.name} ready');
+    var metadataProm = new Promise(function(resolve, reject){
       consumer.getMetadata(null, function(err, metadata){
         if (err) {
           console.error('Error getting metadata');
@@ -173,42 +188,48 @@ router.get("/consumer/:topicName",function(req,res){
       });
     });
 
+    consumer.subscribe(topic);
+    consumer.consume();
+
     metadataProm.then(function(metadata){
       console.log(' - MetadataProm - ');
       console.log(metadata);
-      var metadataJSON = JSON.parse(metadata);
-      console.log('Metadata JSON', metadataJSON);
-      consumer.subscribe([topic]);
+      consumer.subscribe(topic);
       console.log('subs');
       consumer.consume();
-      console.log('consume', consumer.consume());
+      console.log('consume');
     }, function(reason){
       console.log(reason);
     });
   });
-  // .on('data', function(data) {
-  //   console.log(data.value.toString());
-  //   res.status(200).send(data.value.toString());
-  // });
+
   consumer.on('data', function(data){
+    counter ++;
+    if(counter % numMessages === 0){
+      console.log('Calling commit');
+      consumer.commit(data);
+    }
     console.log('Data found');
     console.log(data.value.toString());
     res.status(200).send(data.value.toString());
   });
 
+  consumer.on('disconnected', function(arg){
+    process.exit;
+  });
 
-  //This leads to Broker transport failure
-  // var stream = Kafka.KafkaConsumer.createReadStream({
-  //   'group.id': group,
-  //   'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091'
-  // },{},{
-  //   topics : [topic]
-  // });
-  //
-  // stream.on('data', function(msg) {
-  //   console.log('Got message!');
-  //   console.log(msg.value.toString());
-  //   res.status(200).send(msg.value.toString());
-  // });
-  //
+  consumer.on('event.error', function(err){
+    console.error(err);
+    process.exit(1);
+  });
+
+  consumer.on('event.log', function(log) {
+    console.log(log);
+  });
+
+  consumer.connect();
+
+  setTimeout(function() {
+    consumer.disconnect();
+  }, 300000);
 });

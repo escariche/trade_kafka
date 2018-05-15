@@ -1,3 +1,0 @@
-[2018-05-08 10:29:32,519] DEBUG preRegister called. Server=com.sun.jmx.mbeanserver.JmxMBeanServer@3efee7c4, name=log4j:logger=state.change.logger (state.change.logger)
-[2018-05-08 10:30:08,994] DEBUG preRegister called. Server=com.sun.jmx.mbeanserver.JmxMBeanServer@3efee7c4, name=log4j:logger=state.change.logger (state.change.logger)
-[2018-05-08 10:53:22,806] DEBUG preRegister called. Server=com.sun.jmx.mbeanserver.JmxMBeanServer@3efee7c4, name=log4j:logger=state.change.logger (state.change.logger)

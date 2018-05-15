@@ -1,5 +1,0 @@
-[2018-05-10 09:08:15,782] INFO [ControllerEpochListener on 0]: Initialized controller epoch to 13 and zk version 12 (kafka.controller.ControllerEpochListener)
-[2018-05-10 09:08:15,845] INFO [Controller 0]: Controller starting up (kafka.controller.KafkaController)
-[2018-05-10 09:08:21,977] INFO [Controller 0]: Controller startup complete (kafka.controller.KafkaController)
-[2018-05-10 09:08:22,104] DEBUG [ControllerEpochListener on 0]: Controller epoch listener fired with new epoch 14 (kafka.controller.ControllerEpochListener)
-[2018-05-10 09:08:22,106] INFO [ControllerEpochListener on 0]: Initialized controller epoch to 14 and zk version 13 (kafka.controller.ControllerEpochListener)

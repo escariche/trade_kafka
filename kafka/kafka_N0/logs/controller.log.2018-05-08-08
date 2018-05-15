@@ -1,7 +1,0 @@
-[2018-05-08 08:24:51,067] INFO [Controller-0-to-broker-1-send-thread], Shutting down (kafka.controller.RequestSendThread)
-[2018-05-08 08:24:51,067] INFO [Controller-0-to-broker-1-send-thread], Stopped  (kafka.controller.RequestSendThread)
-[2018-05-08 08:24:51,068] INFO [Controller-0-to-broker-1-send-thread], Shutdown completed (kafka.controller.RequestSendThread)
-[2018-05-08 08:24:51,068] INFO [Controller-0-to-broker-0-send-thread], Shutting down (kafka.controller.RequestSendThread)
-[2018-05-08 08:24:51,068] INFO [Controller-0-to-broker-0-send-thread], Stopped  (kafka.controller.RequestSendThread)
-[2018-05-08 08:24:51,068] INFO [Controller-0-to-broker-0-send-thread], Shutdown completed (kafka.controller.RequestSendThread)
-[2018-05-08 08:24:51,069] INFO [Controller 0]: Controller shutdown complete (kafka.controller.KafkaController)

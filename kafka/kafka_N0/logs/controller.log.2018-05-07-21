@@ -1,3 +1,0 @@
-[2018-05-07 21:53:12,808] INFO [ControllerEpochListener on 0]: Initialized controller epoch to 4 and zk version 3 (kafka.controller.ControllerEpochListener)
-[2018-05-07 21:53:12,866] INFO [Controller 0]: Controller starting up (kafka.controller.KafkaController)
-[2018-05-07 21:53:13,089] INFO [Controller 0]: Controller startup complete (kafka.controller.KafkaController)
