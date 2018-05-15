@@ -172,7 +172,7 @@ router.get("/consumer/:topicName",function(req,res){
   });
 
   consumer.on('ready', function (arg){
-    console.log('Consumer ${arg.name} ready');
+    console.log('Consumer '+ arg.name+ ' ready');
     var metadataProm = new Promise(function(resolve, reject){
       consumer.getMetadata(null, function(err, metadata){
         if (err) {
@@ -187,8 +187,8 @@ router.get("/consumer/:topicName",function(req,res){
       });
     });
 
-    consumer.subscribe(topic);
-    consumer.consume();
+    // consumer.subscribe(topic);
+    // consumer.consume();
 
     metadataProm.then(function(metadata){
       console.log(' - MetadataProm - ');
@@ -202,6 +202,7 @@ router.get("/consumer/:topicName",function(req,res){
     });
   });
 
+  var consumedData;
   consumer.on('data', function(data){
     counter ++;
     if(counter % numMessages === 0){
@@ -209,11 +210,13 @@ router.get("/consumer/:topicName",function(req,res){
       consumer.commit(data);
     }
     console.log('Data found');
+    consumedData += data.value.toString() + '\n';
     console.log(data.value.toString());
-    res.status(200).send(data.value.toString());
   });
 
   consumer.on('disconnected', function(arg){
+    res.status(200).send(consumedData);
+    consumedData = '';
     process.exit;
   });
 
