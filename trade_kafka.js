@@ -30,7 +30,7 @@ app.listen(port,function(){
 var brokerList;
 //PRODUCER
 // router.post("/:topicName",function(req,res){
-app.post('/:topicName', function(req, res){
+app.post("/:topicName", function(req, res){
   console.log("HTTP POST request was received");
   var topic = req.params.topicName; //public address
   //msgToSend may be taken from HTTP request
