@@ -153,7 +153,7 @@ router.get("/:topicName",function(req,res){
       console.log(' - MetadataProm - ');
       console.log(metadata.topics);
       var i = 0;
-      for(; i < metadata.topics.length; i++) {
+      for(; i < metadata.topics.length; i++){
         if (metadata.topics[i].name === '__consumer_offsets') {
           console.log(metadata.topics[i].partitions);
         }
