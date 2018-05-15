@@ -6,7 +6,7 @@ var net = require('net');
 var app = express();
 var bodyParser = require('body-parser');
 var router = express.Router();
-var port = 8080;
+var port = 3000;
 
 router.use(function (req,res,next) {
   console.log("/" + req.method);
