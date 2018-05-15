@@ -123,7 +123,7 @@ router.get("/:topicName",function(req,res){
   };
   const consumer = new Kafka.KafkaConsumer(
     kafkaConfig,{
-    "auto.offset.reset": "earliest",
+    "auto.offset.reset": "smallest",
     "auto.commit.enable": "true"
   });
 
