@@ -1,7 +1,7 @@
 var express = require("express");
-// var PythonShell = require('python-shell');
 var fs = require('fs');
 var Kafka = require('node-rdkafka');
+var net = require('net');
 
 var app = express();
 var router = express.Router();
@@ -161,8 +161,9 @@ router.get("/consumer/:topicName",function(req,res){
   //   'metadata.broker.list': '172.31.34.212:9090, 172.31.34.212:9091',
   // },
   {
-    "auto.offset.reset": "beginning"
+    "auto.offset.reset": "earliest"
   });
+
   const numMessages = 5;
   var counter = 0;
 
@@ -204,10 +205,15 @@ router.get("/consumer/:topicName",function(req,res){
 
   var consumedData;
   consumer.on('data', function(data){
+    console.log('DATA- raw', data);
     counter ++;
     if(counter % numMessages === 0){
       console.log('Calling commit');
       consumer.commit(data);
+      res.status(200).send(consumedData);
+      consumedData = '';
+      consumer.unsubscribe();
+      consumer.disconnect();
     }
     console.log('Data found');
     consumedData += data.value.toString() + '\n';
@@ -215,8 +221,6 @@ router.get("/consumer/:topicName",function(req,res){
   });
 
   consumer.on('disconnected', function(arg){
-    res.status(200).send(consumedData);
-    consumedData = '';
     process.exit;
   });
 
