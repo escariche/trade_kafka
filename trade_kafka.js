@@ -205,19 +205,26 @@ router.get("/consumer/:topicName",function(req,res){
 
   var consumedData;
   consumer.on('data', function(data){
-    console.log('DATA- raw', data);
+    console.log('DATA', data);
+    console.log('size', data.size);
+    console.log('offset', data.offset);
+
     counter ++;
     if(counter % numMessages === 0){
       console.log('Calling commit');
       consumer.commit(data);
-      res.status(200).send(consumedData);
-      consumedData = '';
-      consumer.unsubscribe();
-      consumer.disconnect();
+      //res.status(200).send(consumedData);
+      //consumedData = '';
+      //consumer.unsubscribe();
+      //consumer.disconnect();
     }
     console.log('Data found');
     consumedData += data.value.toString() + '\n';
     console.log(data.value.toString());
+
+    if (data.size === data.offset){
+      console.log('all msgs read');
+    }
   });
 
   consumer.on('disconnected', function(arg){
