@@ -47,8 +47,7 @@ router.post("/:topicName",function(req,res){
   console.log("Topic to create", topic);
 
   var producer = new Kafka.Producer({
-    // 'metadata.broker.list' : '172.31.34.212:9090, 172.31.34.212:9091',
-    "metadata.broker.list": process.env.CLOUDKARAFKA_BROKERS.split(","),
+    'metadata.broker.list' : '172.31.34.212:9090, 172.31.34.212:9091',
     'dr_cb' : true
   });
 
@@ -152,7 +151,7 @@ router.get("/consumer/:topicName",function(req,res){
   const group = 'Standard Company';
   const kafkaConfig = {
     'group.id': group,
-    "metadata.broker.list": process.env.CLOUDKARAFKA_BROKERS.split(",")
+    "metadata.broker.list": '172.31.34.212:9090, 172.31.34.212:9091'
     //There are more detailed configurations
   };
   const consumer = new Kafka.KafkaConsumer(
