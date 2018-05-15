@@ -150,14 +150,6 @@ router.get("/:topicName",function(req,res){
     });
 
     metadataProm.then(function(metadata){
-      console.log(' - MetadataProm - ');
-      console.log(metadata.topics);
-      var i = 0;
-      for(; i < metadata.topics.length; i++){
-        if (metadata.topics[i].name === '__consumer_offsets') {
-          console.log(metadata.topics[i].partitions);
-        }
-      }
       consumer.unsubscribe();
       console.log('unsubs');
       consumer.subscribe(topic);
@@ -195,8 +187,10 @@ router.get("/:topicName",function(req,res){
   consumer.connect();
 
   setTimeout(function() {
-    console.log('Timeout');
+    console.log('Timeout('+ offTimer +') - Already up to date');
+    consumedData += '\n Timeout - Already up to date \n';
     res.status(200).send(consumedData);
+    consumedData = '';
     consumer.disconnect();
   }, offTimer);
 });
