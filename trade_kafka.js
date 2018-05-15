@@ -188,7 +188,7 @@ router.get("/:topicName",function(req,res){
 
   setTimeout(function() {
     console.log('Timeout('+ offTimer +') - Already up to date');
-    consumedData += '\n Timeout - Already up to date \n';
+    consumedData += '\n Up to date \n';
     res.status(200).send(consumedData);
     consumedData = '';
     consumer.disconnect();
