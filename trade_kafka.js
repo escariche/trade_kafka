@@ -179,9 +179,9 @@ router.get("/:topicName",function(req,res){
       offTimer += 1000;
       console.log('DATA', data);
       //TODO build json
-      var txt =  '{"topic" : ' + data.topic +
-                        ',"value" : ' + data.value +
-                        ',"timestamp" : ' + data.timestamp +
+      var txt =  '{"topic" : ""' + data.topic +
+                        '", "value" : "' + data.value +
+                        '", "timestamp" : ' + data.timestamp +
                         '}';
       var extract = JSON.parse(txt);
       consumedData += extract + '\n';
