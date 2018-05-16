@@ -174,14 +174,14 @@ router.get("/:topicName",function(req,res){
   var consumedData = '';
   var offTimer = 10000;
   consumer.on('data', function(data){
-    if (data != null) {
+    if (data.value != null) {
       offTimer += 1000;
       console.log('DATA', data);
       console.log('offset', data.offset);
       consumedData += data.value + '\n';
-      console.log(data.json());
+      console.log(data.value);
     }
-    
+
   });
 
   consumer.on('disconnected', function(arg){
