@@ -5,7 +5,6 @@ var net = require('net');
 
 var app = express();
 var bodyParser = require('body-parser');
-// var router = express.Router();
 var port = 3000;
 
 app.use(function(err, req, res, next){
@@ -23,18 +22,11 @@ app.use(function(err, req, res, next){
       }
 });
 
-// router.use(function (req,res,next) {
-//   console.log("/" + req.method);
-//   next();
-// });
-
 app.get("/",function(req,res){
  //TODO
  return res.status(404).send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
-
 });
 
-// app.use("/",router);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -44,7 +36,6 @@ app.listen(port,function(){
 
 ///// Kafka ///////
 //PRODUCER
-//router.post("/",function(req,res){
 app.post("/", function(req, res){
   console.log("HTTP POST request was received");
   var topic = req.body.topic; //public address
@@ -119,9 +110,7 @@ app.post("/", function(req, res){
 });
 
 //CONSUMER
-// router.get("/:topicName",function(req,res){
 app.get("/:topicName",function(req,res){
-
 
   const topic = [req.params.topicName];
 
