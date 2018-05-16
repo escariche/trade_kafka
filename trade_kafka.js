@@ -173,9 +173,7 @@ router.get("/:topicName",function(req,res){
 
   var offTimer = 10000;
   var extract = new Object;
-  extract.topic = '';
-  extract.value = [];
-  extract.timestamp = '';
+  var values = [];
   consumer.on('data', function(data){
     console.log('Data Value', data.value);
     if (data.value != null) {
@@ -183,6 +181,7 @@ router.get("/:topicName",function(req,res){
       console.log('DATA', data);
       //TODO build json
       extract.topic = data.topic;
+      extract.value = values;
       extract.value.push(data.value);
       extract.timestamp = data.timestamp;
     }
