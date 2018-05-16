@@ -179,7 +179,7 @@ router.get("/:topicName",function(req,res){
       offTimer += 1000;
       console.log('DATA', data);
       //TODO build json
-      var txt =  '{"topic" : ""' + data.topic +
+      var txt =  '{"topic" : "' + data.topic +
                         '", "value" : "' + data.value +
                         '", "timestamp" : ' + data.timestamp +
                         '}';
