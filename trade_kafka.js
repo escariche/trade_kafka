@@ -205,7 +205,6 @@ router.get("/:topicName",function(req,res){
 
   setTimeout(function() {
     console.log('Timeout('+ offTimer +') - Already up to date');
-    consumedData += '\n Up to date \n';
     console.log(extract);
     res.status(200).send(extract);
     delete extract;
