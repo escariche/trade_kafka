@@ -118,21 +118,25 @@ app.post("/", function(req, res){
 
 //CONSUMER
 router.get("/:topicName",function(req,res){
+
   const topic = [req.params.topicName];
+
   console.log("HTTP GET  request was received for topic", topic);
+
   //TODO: Define groups in the System for different companies.
   const group = 'Standard Company';
+
   const kafkaConfig = {
     'group.id': group,
     "metadata.broker.list": '172.31.34.212:9090, 172.31.34.212:9091'
     //There are more detailed configurations
   };
+
   const consumer = new Kafka.KafkaConsumer(
     kafkaConfig,{
     "auto.offset.reset": "smallest",
     "auto.commit.enable": "true"
   });
-
 
   consumer.on('error', function(err){
     console.log(err);
@@ -174,7 +178,7 @@ router.get("/:topicName",function(req,res){
     console.log('DATA', data);
     console.log('offset', data.offset);
     consumedData += data.value + '\n';
-    console.log(data.value);
+    console.log(data.json());
   });
 
   consumer.on('disconnected', function(arg){
