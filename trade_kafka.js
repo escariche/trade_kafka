@@ -50,6 +50,7 @@ app.post("/", function(req, res){
   console.log(req.body);
   var msgToSend = req.body;
   console.log("Topic to create", topic);
+  console.log('Message to send', msgToSend);
 
   var producer = new Kafka.Producer({
     'metadata.broker.list' : '172.31.34.212:9090, 172.31.34.212:9091',
@@ -109,7 +110,6 @@ app.post("/", function(req, res){
     console.error(err);
     res.send(err);
   });
-
 
   setTimeout(function() {
     producer.disconnect();
