@@ -10,7 +10,7 @@ var port = 3000;
 
 app.use(function(err, req, res, next){
   if(err.status && err.status < 500) {
-        return res.status(400).send('Request Aborted');
+        return res.status(404).send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
       }
 
       console.log('Type of Error:', typeof err);
@@ -22,15 +22,15 @@ app.use(function(err, req, res, next){
         res.render('500', { error: err });
       }
 });
+
 router.use(function (req,res,next) {
   console.log("/" + req.method);
   next();
 });
 
-router.get("/",function(req,res){
-  //TODO
-  res.status(404).send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
-});
+// router.get("/",function(req,res){
+//   //TODO
+// });
 
 app.use("/",router);
 app.use(bodyParser.json());
@@ -48,7 +48,7 @@ app.post("/", function(req, res){
   var topic = req.body.topic; //public address
   //msgToSend may be taken from HTTP request
   console.log(req.body);
-  var msgToSend = req.body;
+  var msgToSend = req.body.value;
   console.log("Topic to create", topic);
   console.log('Message to send', msgToSend);
 
@@ -178,8 +178,13 @@ router.get("/:topicName",function(req,res){
     if (data.value != null) {
       offTimer += 1000;
       console.log('DATA', data);
-      console.log('offset', data.offset);
-      consumedData += data.value + '\n';
+      //TODO build json
+      var txt =  '{"topic" : ' + data.topic +
+                        ',"value" : ' + data.value +
+                        ',"timestamp" : ' + data.timestamp +
+                        '}';
+      var extract = JSON.parse(txt);
+      consumedData += extract + '\n';
     }
   });
 
