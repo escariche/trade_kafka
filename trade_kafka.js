@@ -174,7 +174,7 @@ router.get("/:topicName",function(req,res){
   var consumedData = '';
   var offTimer = 10000;
   consumer.on('data', function(data){
-    console.log(JSON.parse(data.value));
+    console.log('Data Value', data.value);
     if (data.value != null) {
       offTimer += 1000;
       console.log('DATA', data);
