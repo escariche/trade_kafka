@@ -5,7 +5,7 @@ var net = require('net');
 
 var app = express();
 var bodyParser = require('body-parser');
-var router = express.Router();
+// var router = express.Router();
 var port = 3000;
 
 app.use(function(err, req, res, next){
@@ -23,16 +23,16 @@ app.use(function(err, req, res, next){
       }
 });
 
-router.use(function (req,res,next) {
-  console.log("/" + req.method);
-  next();
-});
+// router.use(function (req,res,next) {
+//   console.log("/" + req.method);
+//   next();
+// });
 
 // router.get("/",function(req,res){
 //   //TODO
 // });
 
-app.use("/",router);
+// app.use("/",router);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -117,7 +117,9 @@ app.post("/", function(req, res){
 });
 
 //CONSUMER
-router.get("/:topicName",function(req,res){
+// router.get("/:topicName",function(req,res){
+app.get("/:topicName",function(req,res){
+
 
   const topic = [req.params.topicName];
 
@@ -203,8 +205,8 @@ router.get("/:topicName",function(req,res){
   consumer.connect();
 
   setTimeout(function() {
-    console.log('Timeout('+ offTimer +') - Already up to date');
     console.log(extract);
+    console.log('Timeout('+ offTimer +') - Already up to date');
     res.status(200).send(extract);
     delete extract;
     consumer.disconnect();
