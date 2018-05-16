@@ -96,7 +96,7 @@ app.post("/", function(req, res){
           // you can send an opaque token here, which gets passed along
           // to your delivery reports
         );
-        res.status(200);
+        res.status(200).send();
       } catch (err) {
         console.error('A problem occurred when sending our message');
         console.error(err);
