@@ -45,7 +45,7 @@ app.listen(port,function(){
 //router.post("/",function(req,res){
 app.post("/", function(req, res){
   console.log("HTTP POST request was received");
-  var topic = req.body.topicName; //public address
+  var topic = req.body.topic; //public address
   //msgToSend may be taken from HTTP request
   console.log(req.body);
   var msgToSend = req.body;
@@ -64,6 +64,7 @@ app.post("/", function(req, res){
     console.error('Error from producer');
     console.error(err);
   });
+
   producer.connect();
 
   producer.on('ready', function(){
@@ -94,7 +95,7 @@ app.post("/", function(req, res){
           // you can send an opaque token here, which gets passed along
           // to your delivery reports
         );
-        res.status(200).send();
+        res.status(200);
       } catch (err) {
         console.error('A problem occurred when sending our message');
         console.error(err);
@@ -119,6 +120,7 @@ app.post("/", function(req, res){
 router.get("/:topicName",function(req,res){
   const topic = [req.params.topicName];
   console.log("HTTP GET  request was received for topic", topic);
+  //TODO: Define groups in the System for different companies.
   const group = 'Standard Company';
   const kafkaConfig = {
     'group.id': group,
@@ -171,8 +173,8 @@ router.get("/:topicName",function(req,res){
     offTimer += 1000;
     console.log('DATA', data);
     console.log('offset', data.offset);
-    consumedData += data.value.toString() + '\n';
-    console.log(data.value.toString());
+    consumedData += data.value + '\n';
+    console.log(data.value);
   });
 
   consumer.on('disconnected', function(arg){
