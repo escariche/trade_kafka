@@ -182,7 +182,7 @@ router.get("/:topicName",function(req,res){
       //TODO build json
       extract.topic = data.topic;
       extract.value = values;
-      extract.value.push(data.value);
+      extract.value.push(data.value.toString());
       extract.timestamp = data.timestamp;
     }
   });
