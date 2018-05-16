@@ -172,7 +172,10 @@ router.get("/:topicName",function(req,res){
   });
 
   var offTimer = 10000;
-  var extract = new Object();
+  var extract = new Object;
+  extract.topic = '';
+  extract.value = [];
+  extract.timestamp = '';
   consumer.on('data', function(data){
     console.log('Data Value', data.value);
     if (data.value != null) {
