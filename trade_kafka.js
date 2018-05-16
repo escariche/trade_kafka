@@ -48,7 +48,7 @@ app.post("/", function(req, res){
   var topic = req.body.topicName; //public address
   //msgToSend may be taken from HTTP request
   console.log(req.body);
-  var msgToSend = Date.now().toString();
+  var msgToSend = req.body;
   console.log("Topic to create", topic);
 
   var producer = new Kafka.Producer({
