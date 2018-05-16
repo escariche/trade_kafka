@@ -41,10 +41,9 @@ app.listen(port,function(){
 });
 
 ///// Kafka ///////
-var brokerList;
 //PRODUCER
- router.post("/",function(req,res){
-//app.post("/:topicName", function(req, res){
+//router.post("/",function(req,res){
+app.post("/", function(req, res){
   console.log("HTTP POST request was received");
   var topic = req.body.topicName; //public address
   //msgToSend may be taken from HTTP request
@@ -117,7 +116,6 @@ var brokerList;
 });
 
 //CONSUMER
-
 router.get("/:topicName",function(req,res){
   const topic = [req.params.topicName];
   console.log("HTTP GET  request was received for topic", topic);
