@@ -175,11 +175,11 @@ router.get("/:topicName",function(req,res){
   var offTimer = 10000;
   consumer.on('data', function(data){
     if (data.value != null) {
+      console.log(JSON.parse(data.value));
       offTimer += 1000;
       console.log('DATA', data);
       console.log('offset', data.offset);
       consumedData += data.value + '\n';
-      console.log(data.value);
     }
 
   });
