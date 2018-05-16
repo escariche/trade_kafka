@@ -171,20 +171,17 @@ router.get("/:topicName",function(req,res){
     });
   });
 
-  var consumedData = '';
   var offTimer = 10000;
+  var extract = new Object();
   consumer.on('data', function(data){
     console.log('Data Value', data.value);
     if (data.value != null) {
       offTimer += 1000;
       console.log('DATA', data);
       //TODO build json
-      var txt =  '{"topic" : "' + data.topic +
-                        '", "value" : "' + data.value +
-                        '", "timestamp" : ' + data.timestamp +
-                        '}';
-      var extract = JSON.parse(txt);
-      consumedData += extract + '\n';
+      extract.topic = data.topic;
+      extract.value.push(data.value);
+      extract.timestamp = data.timestamp;
     }
   });
 
@@ -206,8 +203,9 @@ router.get("/:topicName",function(req,res){
   setTimeout(function() {
     console.log('Timeout('+ offTimer +') - Already up to date');
     consumedData += '\n Up to date \n';
-    res.status(200).send(consumedData);
-    consumedData = '';
+    console.log(extract);
+    res.status(200).send(extract);
+    delete extract;
     consumer.disconnect();
   }, offTimer);
 });
