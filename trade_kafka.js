@@ -7,6 +7,12 @@ var app = express();
 var bodyParser = require('body-parser');
 var port = 3000;
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(function(err, req, res, next){
   if(err.status && err.status < 500) {
         return res.status(404).send("<img src=\"https://d2v4zi8pl64nxt.cloudfront.net/the-most-entertaining-guide-to-landing-page-optimization-youll-ever-read/537a57c5c2de14.13737630.png\">");
